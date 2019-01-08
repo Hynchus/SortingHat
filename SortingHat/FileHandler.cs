@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Drawing;
 using System.Threading.Tasks;
 using System.IO;
+using Xceed.Words.NET;
 
 namespace SortingHat
 {
@@ -86,6 +88,36 @@ namespace SortingHat
             {
                 // File likely doesn't exist already, we'll ignore
             }
+        }
+
+        public static void exportToWord(string filepath, Grouping grouping)
+        {
+            DocX document = DocX.Create(filepath);
+            Formatting groupingNameFormat = new Formatting();
+            groupingNameFormat.FontFamily = new Xceed.Words.NET.Font("Tahoma");
+            groupingNameFormat.Size = 20;
+            Formatting groupNameFormat = new Formatting();
+            groupNameFormat.FontFamily = new Xceed.Words.NET.Font("Verdana");
+            Formatting groupListFormat = new Formatting();
+            groupListFormat.FontFamily = new Xceed.Words.NET.Font("Trebuchet MS");
+            document.InsertParagraph(grouping.Name + Environment.NewLine, false, groupingNameFormat).Alignment = Alignment.center;
+            foreach (Group group in grouping.groups)
+            {
+                if (group.Colour == SystemColors.Control)
+                {
+                    groupNameFormat.FontColor = Color.Black;
+                }
+                else
+                {
+                    groupNameFormat.FontColor = group.Colour;
+                }
+                string groupName = group.Name;
+                string groupList = string.Join(Environment.NewLine, group.getStudentNames());
+                document.InsertParagraph(groupName, false, groupNameFormat);
+                document.InsertParagraph(groupList + Environment.NewLine, false, groupListFormat);
+            }
+
+            document.Save();
         }
     }
 }

@@ -310,6 +310,11 @@ namespace SortingHat
             return students;
         }
 
+        public List<string> getStudentNames()
+        {
+            return students.Select(s => s.Name).ToList<string>();
+        }
+
         public void clearStudents()
         {
             students.Clear();

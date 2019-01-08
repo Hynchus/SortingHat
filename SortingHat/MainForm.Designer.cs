@@ -48,6 +48,8 @@
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Focuspnl = new System.Windows.Forms.Panel();
             this.GroupingDisplayPanel = new SortingHat.GroupingDisplay();
+            this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.WordExportbtn = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -116,14 +118,14 @@
             // NewGroupingbtn
             // 
             this.NewGroupingbtn.Name = "NewGroupingbtn";
-            this.NewGroupingbtn.Size = new System.Drawing.Size(131, 30);
+            this.NewGroupingbtn.Size = new System.Drawing.Size(252, 30);
             this.NewGroupingbtn.Text = "New";
             this.NewGroupingbtn.Click += new System.EventHandler(this.NewGroupingbtn_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(128, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(249, 6);
             // 
             // ClassNameDisplay
             // 
@@ -158,6 +160,7 @@
             this.randomizeGroupsToolStripMenuItem,
             this.toolStripSeparator3,
             this.editToolStripMenuItem,
+            this.exportToolStripMenuItem,
             this.deleteToolStripMenuItem});
             this.GroupingDisplaybtn.Enabled = false;
             this.GroupingDisplaybtn.Name = "GroupingDisplaybtn";
@@ -169,26 +172,26 @@
             // randomizeGroupsToolStripMenuItem
             // 
             this.randomizeGroupsToolStripMenuItem.Name = "randomizeGroupsToolStripMenuItem";
-            this.randomizeGroupsToolStripMenuItem.Size = new System.Drawing.Size(214, 30);
+            this.randomizeGroupsToolStripMenuItem.Size = new System.Drawing.Size(252, 30);
             this.randomizeGroupsToolStripMenuItem.Text = "Shuffle Groups";
             this.randomizeGroupsToolStripMenuItem.Click += new System.EventHandler(this.randomizeGroupsToolStripMenuItem_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(211, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(249, 6);
             // 
             // editToolStripMenuItem
             // 
             this.editToolStripMenuItem.Name = "editToolStripMenuItem";
-            this.editToolStripMenuItem.Size = new System.Drawing.Size(214, 30);
+            this.editToolStripMenuItem.Size = new System.Drawing.Size(252, 30);
             this.editToolStripMenuItem.Text = "Edit";
             this.editToolStripMenuItem.Click += new System.EventHandler(this.editToolStripMenuItem_Click_1);
             // 
             // deleteToolStripMenuItem
             // 
             this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(214, 30);
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(252, 30);
             this.deleteToolStripMenuItem.Text = "Delete";
             this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
             // 
@@ -210,6 +213,21 @@
             this.GroupingDisplayPanel.Padding = new System.Windows.Forms.Padding(0, 0, 0, 10);
             this.GroupingDisplayPanel.Size = new System.Drawing.Size(704, 242);
             this.GroupingDisplayPanel.TabIndex = 1;
+            // 
+            // exportToolStripMenuItem
+            // 
+            this.exportToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.WordExportbtn});
+            this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
+            this.exportToolStripMenuItem.Size = new System.Drawing.Size(252, 30);
+            this.exportToolStripMenuItem.Text = "Export";
+            // 
+            // WordExportbtn
+            // 
+            this.WordExportbtn.Name = "WordExportbtn";
+            this.WordExportbtn.Size = new System.Drawing.Size(252, 30);
+            this.WordExportbtn.Text = "Word Document";
+            this.WordExportbtn.Click += new System.EventHandler(this.WordExportbtn_Click);
             // 
             // MainForm
             // 
@@ -255,6 +273,8 @@
         private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
         private GroupingDisplay GroupingDisplayPanel;
         private System.Windows.Forms.Panel Focuspnl;
+        private System.Windows.Forms.ToolStripMenuItem exportToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem WordExportbtn;
     }
 }
 

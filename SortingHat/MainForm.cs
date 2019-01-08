@@ -307,5 +307,16 @@ namespace SortingHat
                 Model.currentClass.shuffleGrouping(Model.currentClass.CurrentGroupingName);
             }
         }
+
+        private void WordExportbtn_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.DefaultExt = ".docx";
+            saveFileDialog.Filter = "Word Document (*.docx)|*.docx";
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                FileHandler.exportToWord(saveFileDialog.FileName, Model.currentClass.getGrouping(Model.currentClass.CurrentGroupingName));
+            }
+        }
     }
 }
