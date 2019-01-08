@@ -106,5 +106,17 @@ namespace SortingHat.Properties {
                 this["GroupingEditFormLocation"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Control")]
+        public global::System.Drawing.Color ColourTheme {
+            get {
+                return ((global::System.Drawing.Color)(this["ColourTheme"]));
+            }
+            set {
+                this["ColourTheme"] = value;
+            }
+        }
     }
 }

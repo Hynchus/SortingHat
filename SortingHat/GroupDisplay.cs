@@ -12,18 +12,35 @@ namespace SortingHat
 {
     public partial class GroupDisplay : UserControl
     {
+        private static ColorDialog GroupColourDialog = null;
         private Color defaultGroupNameBackColor = SystemColors.Control;
         private Group group = null;
 
         public GroupDisplay()
         {
             InitializeComponent();
+            if (GroupColourDialog == null) { GroupColourDialog = new ColorDialog(); }
             defaultGroupNameBackColor = GroupNameTextbox.BackColor;
         }
 
-        private void GroupDisplay_Load(object sender, EventArgs e)
+        private void refreshColours()
         {
+            this.BackColor = group.Colour;
+            GroupNameTextbox.BackColor = group.Colour;
+            float brightness = group.Colour.GetBrightness();
+            if (group.Colour.GetBrightness() > 0.49f)
+            {
+                GroupNameTextbox.ForeColor = Color.Black;
+            }
+            else
+            {
+                GroupNameTextbox.ForeColor = Color.White;
+            }
+        }
 
+        private void refreshCosmetics()
+        {
+            refreshColours();
         }
 
         private int StudentAlphabeticalComparison(Student studentOne, Student studentTwo)
@@ -41,6 +58,7 @@ namespace SortingHat
             {
                 GroupListbox.Items.Add(student.Name);
             }
+            refreshCosmetics();
         }
 
         private void GroupNameTextbox_TextChanged(object sender, EventArgs e)
@@ -50,16 +68,21 @@ namespace SortingHat
 
         private void GroupNameTextbox_MouseEnter(object sender, EventArgs e)
         {
-            //GroupNameTextbox.BorderStyle = BorderStyle.FixedSingle;
-            //GroupNameTextbox.ReadOnly = false;
             GroupNameTextbox.BackColor = SystemColors.ControlLight;
         }
 
         private void GroupNameTextbox_MouseLeave(object sender, EventArgs e)
         {
-            //GroupNameTextbox.BorderStyle = BorderStyle.None;
-            //GroupNameTextbox.ReadOnly = true;
-            GroupNameTextbox.BackColor = defaultGroupNameBackColor;
+            GroupNameTextbox.BackColor = group.Colour;
+        }
+
+        private void GroupColourbtn_Click(object sender, EventArgs e)
+        {
+            if (GroupColourDialog.ShowDialog() == DialogResult.OK)
+            {
+                group.Colour = GroupColourDialog.Color;
+                refreshCosmetics();
+            }
         }
     }
 }

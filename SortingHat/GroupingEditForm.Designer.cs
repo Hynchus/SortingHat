@@ -97,7 +97,7 @@
             this.GroupCountTrackbar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.GroupCountTrackbar.Location = new System.Drawing.Point(49, 149);
-            this.GroupCountTrackbar.Maximum = 14;
+            this.GroupCountTrackbar.Maximum = 16;
             this.GroupCountTrackbar.Minimum = 1;
             this.GroupCountTrackbar.Name = "GroupCountTrackbar";
             this.GroupCountTrackbar.Size = new System.Drawing.Size(218, 69);

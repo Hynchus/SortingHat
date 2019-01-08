@@ -46,8 +46,8 @@
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.GroupingDisplayPanel = new SortingHat.GroupingDisplay();
             this.Focuspnl = new System.Windows.Forms.Panel();
+            this.GroupingDisplayPanel = new SortingHat.GroupingDisplay();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -80,7 +80,7 @@
             this.NewClassbtn,
             this.toolStripSeparator1});
             this.classToolStripMenuItem.Name = "classToolStripMenuItem";
-            this.classToolStripMenuItem.Size = new System.Drawing.Size(139, 30);
+            this.classToolStripMenuItem.Size = new System.Drawing.Size(252, 30);
             this.classToolStripMenuItem.Text = "Class";
             // 
             // NewClassbtn
@@ -98,7 +98,7 @@
             // CloseFormbtn
             // 
             this.CloseFormbtn.Name = "CloseFormbtn";
-            this.CloseFormbtn.Size = new System.Drawing.Size(139, 30);
+            this.CloseFormbtn.Size = new System.Drawing.Size(252, 30);
             this.CloseFormbtn.Text = "Close";
             this.CloseFormbtn.Click += new System.EventHandler(this.quitToolStripMenuItem_Click);
             // 
@@ -192,16 +192,6 @@
             this.deleteToolStripMenuItem.Text = "Delete";
             this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
             // 
-            // GroupingDisplayPanel
-            // 
-            this.GroupingDisplayPanel.BackColor = System.Drawing.SystemColors.Control;
-            this.GroupingDisplayPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.GroupingDisplayPanel.Location = new System.Drawing.Point(0, 33);
-            this.GroupingDisplayPanel.Name = "GroupingDisplayPanel";
-            this.GroupingDisplayPanel.Padding = new System.Windows.Forms.Padding(0, 0, 0, 10);
-            this.GroupingDisplayPanel.Size = new System.Drawing.Size(704, 230);
-            this.GroupingDisplayPanel.TabIndex = 1;
-            // 
             // Focuspnl
             // 
             this.Focuspnl.Location = new System.Drawing.Point(693, 250);
@@ -211,11 +201,21 @@
             this.Focuspnl.TabStop = true;
             this.Focuspnl.Visible = false;
             // 
+            // GroupingDisplayPanel
+            // 
+            this.GroupingDisplayPanel.BackColor = System.Drawing.SystemColors.Control;
+            this.GroupingDisplayPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.GroupingDisplayPanel.Location = new System.Drawing.Point(0, 33);
+            this.GroupingDisplayPanel.Name = "GroupingDisplayPanel";
+            this.GroupingDisplayPanel.Padding = new System.Windows.Forms.Padding(0, 0, 0, 10);
+            this.GroupingDisplayPanel.Size = new System.Drawing.Size(704, 242);
+            this.GroupingDisplayPanel.TabIndex = 1;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(704, 263);
+            this.ClientSize = new System.Drawing.Size(704, 275);
             this.Controls.Add(this.Focuspnl);
             this.Controls.Add(this.GroupingDisplayPanel);
             this.Controls.Add(this.menuStrip1);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Drawing;
 
 namespace SortingHat
 {
@@ -123,6 +124,7 @@ namespace SortingHat
     public class Grouping
     {
         private string name;
+        
         public List<Group> groups;
 
         public string Name { get => name; set => name = value; }
@@ -258,9 +260,11 @@ namespace SortingHat
     public class Group
     {
         private string name;
+        private Color colour = SystemColors.Control;
         private List<Student> students;
 
         public string Name { get => name; set => name = value; }
+        public Color Colour { get => colour; set => colour = value; }
 
         public Group(string groupName)
         {

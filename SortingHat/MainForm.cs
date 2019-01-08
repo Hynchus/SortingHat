@@ -100,6 +100,7 @@ namespace SortingHat
             {
                 groupingToolStripMenuItem.DropDownItems.RemoveAt(2);
             }
+            unloadGrouping();
         }
 
         private void loadGroupings()
