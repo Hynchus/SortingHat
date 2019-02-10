@@ -43,17 +43,12 @@ namespace SortingHat
             refreshColours();
         }
 
-        private int StudentAlphabeticalComparison(Student studentOne, Student studentTwo)
-        {
-            return string.Compare(studentOne.Name, studentTwo.Name);
-        }
-
         public void displayGroup(Group group)
         {
             this.group = group;
             GroupNameTextbox.Text = group.Name;
             List<Student> studentList = group.getStudents();
-            studentList.Sort(StudentAlphabeticalComparison);
+            studentList.Sort(Utilities.StudentAlphabeticalComparison);
             foreach (Student student in studentList)
             {
                 GroupListbox.Items.Add(student.Name);

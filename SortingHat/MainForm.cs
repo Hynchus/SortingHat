@@ -315,7 +315,7 @@ namespace SortingHat
             saveFileDialog.Filter = "Word Document (*.docx)|*.docx";
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
-                FileHandler.exportToWord(saveFileDialog.FileName, Model.currentClass.getGrouping(Model.currentClass.CurrentGroupingName));
+                FileHandler.exportToWord(saveFileDialog.FileName, Model.currentClass.getGrouping(Model.currentClass.CurrentGroupingName), Model.currentClass.Name);
             }
         }
     }
