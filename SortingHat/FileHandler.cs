@@ -90,17 +90,23 @@ namespace SortingHat
             }
         }
 
-        public static void exportToWord(string filepath, Grouping grouping)
+        public static void exportToWord(string filepath, Grouping grouping, string classname)
         {
             DocX document = DocX.Create(filepath);
             Formatting groupingNameFormat = new Formatting();
             groupingNameFormat.FontFamily = new Xceed.Words.NET.Font("Tahoma");
             groupingNameFormat.Size = 20;
+            Formatting classNameFormat = new Formatting();
+            classNameFormat.FontFamily = new Xceed.Words.NET.Font("Tahoma");
+            classNameFormat.Size = 10;
             Formatting groupNameFormat = new Formatting();
             groupNameFormat.FontFamily = new Xceed.Words.NET.Font("Verdana");
+            groupNameFormat.Size = 14;
             Formatting groupListFormat = new Formatting();
             groupListFormat.FontFamily = new Xceed.Words.NET.Font("Trebuchet MS");
+            groupListFormat.Size = 12;
             document.InsertParagraph(grouping.Name + Environment.NewLine, false, groupingNameFormat).Alignment = Alignment.center;
+            document.InsertParagraph(classname + Environment.NewLine, false, classNameFormat).Alignment = Alignment.right;
             foreach (Group group in grouping.groups)
             {
                 if (group.Colour == SystemColors.Control)
@@ -112,7 +118,8 @@ namespace SortingHat
                     groupNameFormat.FontColor = group.Colour;
                 }
                 string groupName = group.Name;
-                string groupList = string.Join(Environment.NewLine, group.getStudentNames());
+                string bulletPoint = " - ";
+                string groupList = bulletPoint + string.Join(Environment.NewLine + bulletPoint, group.getStudentNames());
                 document.InsertParagraph(groupName, false, groupNameFormat);
                 document.InsertParagraph(groupList + Environment.NewLine, false, groupListFormat);
             }
