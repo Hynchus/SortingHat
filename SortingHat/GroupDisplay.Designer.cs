@@ -69,14 +69,18 @@
             this.GroupColourbtn.Size = new System.Drawing.Size(20, 20);
             this.GroupColourbtn.TabIndex = 3;
             this.GroupColourbtn.Click += new System.EventHandler(this.GroupColourbtn_Click);
+            this.GroupColourbtn.MouseEnter += new System.EventHandler(this.GroupColourbtn_MouseEnter);
+            this.GroupColourbtn.MouseLeave += new System.EventHandler(this.GroupColourbtn_MouseLeave);
             // 
             // StudentList
             // 
             this.StudentList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.StudentList.DragMethod = System.Windows.Forms.DragDropEffects.Move;
             this.StudentList.Location = new System.Drawing.Point(18, 45);
             this.StudentList.Name = "StudentList";
+            this.StudentList.ReceiveDrop = true;
             this.StudentList.Size = new System.Drawing.Size(249, 150);
             this.StudentList.TabIndex = 4;
             // 

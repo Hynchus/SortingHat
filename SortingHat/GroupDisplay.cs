@@ -14,6 +14,7 @@ namespace SortingHat
     {
         private static ColorDialog GroupColourDialog = null;
         private Color defaultGroupNameBackColor = SystemColors.Control;
+        private Color highlightColor = SystemColors.ControlLight;
         private Group group = null;
 
         public GroupDisplay()
@@ -58,7 +59,7 @@ namespace SortingHat
 
         private void GroupNameTextbox_MouseEnter(object sender, EventArgs e)
         {
-            GroupNameTextbox.BackColor = SystemColors.ControlLight;
+            GroupNameTextbox.BackColor = highlightColor;
         }
 
         private void GroupNameTextbox_MouseLeave(object sender, EventArgs e)
@@ -83,6 +84,16 @@ namespace SortingHat
         public List<Tuple<Student, StudentList.Change>> getChanges()
         {
             return this.StudentList.getChanges();
+        }
+
+        private void GroupColourbtn_MouseEnter(object sender, EventArgs e)
+        {
+            GroupColourbtn.BackColor = highlightColor;
+        }
+
+        private void GroupColourbtn_MouseLeave(object sender, EventArgs e)
+        {
+            GroupColourbtn.BackColor = group.Colour;
         }
     }
 }
