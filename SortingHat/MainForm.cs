@@ -16,6 +16,7 @@ namespace SortingHat
         {
             this.Location = Properties.Settings.Default.MainFormLocation;
             this.Size = Properties.Settings.Default.MainFormSize;
+            this.BackColor = Properties.Settings.Default.ColourTheme;
             Model.setCurrentClass(Properties.Settings.Default.CurrentClass);
         }
 
@@ -106,7 +107,7 @@ namespace SortingHat
         private void loadGroupings()
         {
             unloadGroupings();
-            foreach (Grouping grouping in Model.currentClass.getGroupings())
+            foreach (Grouping grouping in Model.currentClass.Groupings)
             {
                 addGroupingButton(grouping.Name);
             }
@@ -324,24 +325,15 @@ namespace SortingHat
             return GroupingDisplayPanel.groupChangesExist();
         }
 
-        /*
-        private void revertChangesToolStripMenuItem_Click(object sender, EventArgs e)
+        private void constraintsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            GroupingDisplayPanel.displayGrouping(Model.currentClass.getCurrentGrouping());
+            ConstraintsEditForm constraintsForm = new ConstraintsEditForm(Model.currentClass.Students, Model.currentClass.Constraints);
+            constraintsForm.ShowDialog();
+            if (constraintsForm.DialogResult == DialogResult.OK)
+            {
+                Model.currentClass.updateConstraints(constraintsForm.Constraints);
+                Model.saveCurrentClass();
+            }
         }
-
-        private void GroupingDisplaybtn_Click(object sender, EventArgs e)
-        {
-            bool showTransferButtons = checkForGroupChanges();
-            saveGroupTransfersToolStripMenuItem.Visible = showTransferButtons;
-            revertChangesToolStripMenuItem.Visible = showTransferButtons;
-        }
-
-
-        private void saveGroupTransfersToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
-        */
     }
 }

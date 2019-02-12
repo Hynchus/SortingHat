@@ -49,9 +49,8 @@
             this.WordExportbtn = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Focuspnl = new System.Windows.Forms.Panel();
-            this.revertChangesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.GroupingDisplayPanel = new SortingHat.GroupingDisplay();
-            this.saveGroupTransfersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.constraintsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -135,6 +134,7 @@
             this.ClassNameDisplay.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             this.ClassNameDisplay.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ClassEditbtn,
+            this.constraintsToolStripMenuItem,
             this.ClassDeletebtn});
             this.ClassNameDisplay.Enabled = false;
             this.ClassNameDisplay.Name = "ClassNameDisplay";
@@ -145,14 +145,14 @@
             // ClassEditbtn
             // 
             this.ClassEditbtn.Name = "ClassEditbtn";
-            this.ClassEditbtn.Size = new System.Drawing.Size(146, 30);
+            this.ClassEditbtn.Size = new System.Drawing.Size(252, 30);
             this.ClassEditbtn.Text = "Edit";
             this.ClassEditbtn.Click += new System.EventHandler(this.editToolStripMenuItem_Click);
             // 
             // ClassDeletebtn
             // 
             this.ClassDeletebtn.Name = "ClassDeletebtn";
-            this.ClassDeletebtn.Size = new System.Drawing.Size(146, 30);
+            this.ClassDeletebtn.Size = new System.Drawing.Size(252, 30);
             this.ClassDeletebtn.Text = "Delete";
             this.ClassDeletebtn.Click += new System.EventHandler(this.ClassDeletebtn_Click);
             // 
@@ -163,8 +163,6 @@
             this.randomizeGroupsToolStripMenuItem,
             this.toolStripSeparator3,
             this.editToolStripMenuItem,
-            this.saveGroupTransfersToolStripMenuItem,
-            this.revertChangesToolStripMenuItem,
             this.exportToolStripMenuItem,
             this.deleteToolStripMenuItem});
             this.GroupingDisplaybtn.Enabled = false;
@@ -177,19 +175,19 @@
             // randomizeGroupsToolStripMenuItem
             // 
             this.randomizeGroupsToolStripMenuItem.Name = "randomizeGroupsToolStripMenuItem";
-            this.randomizeGroupsToolStripMenuItem.Size = new System.Drawing.Size(274, 30);
+            this.randomizeGroupsToolStripMenuItem.Size = new System.Drawing.Size(252, 30);
             this.randomizeGroupsToolStripMenuItem.Text = "Shuffle Groups";
             this.randomizeGroupsToolStripMenuItem.Click += new System.EventHandler(this.randomizeGroupsToolStripMenuItem_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(271, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(249, 6);
             // 
             // editToolStripMenuItem
             // 
             this.editToolStripMenuItem.Name = "editToolStripMenuItem";
-            this.editToolStripMenuItem.Size = new System.Drawing.Size(274, 30);
+            this.editToolStripMenuItem.Size = new System.Drawing.Size(252, 30);
             this.editToolStripMenuItem.Text = "Edit";
             this.editToolStripMenuItem.Click += new System.EventHandler(this.editToolStripMenuItem_Click_1);
             // 
@@ -198,7 +196,7 @@
             this.exportToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.WordExportbtn});
             this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
-            this.exportToolStripMenuItem.Size = new System.Drawing.Size(274, 30);
+            this.exportToolStripMenuItem.Size = new System.Drawing.Size(252, 30);
             this.exportToolStripMenuItem.Text = "Export";
             // 
             // WordExportbtn
@@ -211,7 +209,7 @@
             // deleteToolStripMenuItem
             // 
             this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(274, 30);
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(252, 30);
             this.deleteToolStripMenuItem.Text = "Delete";
             this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
             // 
@@ -224,13 +222,6 @@
             this.Focuspnl.TabStop = true;
             this.Focuspnl.Visible = false;
             // 
-            // revertChangesToolStripMenuItem
-            // 
-            this.revertChangesToolStripMenuItem.Name = "revertChangesToolStripMenuItem";
-            this.revertChangesToolStripMenuItem.Size = new System.Drawing.Size(274, 30);
-            this.revertChangesToolStripMenuItem.Text = "Revert Group Transfers";
-            this.revertChangesToolStripMenuItem.Visible = false;
-            // 
             // GroupingDisplayPanel
             // 
             this.GroupingDisplayPanel.BackColor = System.Drawing.SystemColors.Control;
@@ -241,12 +232,12 @@
             this.GroupingDisplayPanel.Size = new System.Drawing.Size(704, 242);
             this.GroupingDisplayPanel.TabIndex = 1;
             // 
-            // saveGroupTransfersToolStripMenuItem
+            // constraintsToolStripMenuItem
             // 
-            this.saveGroupTransfersToolStripMenuItem.Name = "saveGroupTransfersToolStripMenuItem";
-            this.saveGroupTransfersToolStripMenuItem.Size = new System.Drawing.Size(274, 30);
-            this.saveGroupTransfersToolStripMenuItem.Text = "Save Group Transfers";
-            this.saveGroupTransfersToolStripMenuItem.Visible = false;
+            this.constraintsToolStripMenuItem.Name = "constraintsToolStripMenuItem";
+            this.constraintsToolStripMenuItem.Size = new System.Drawing.Size(252, 30);
+            this.constraintsToolStripMenuItem.Text = "Constraints";
+            this.constraintsToolStripMenuItem.Click += new System.EventHandler(this.constraintsToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -294,8 +285,7 @@
         private System.Windows.Forms.Panel Focuspnl;
         private System.Windows.Forms.ToolStripMenuItem exportToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem WordExportbtn;
-        private System.Windows.Forms.ToolStripMenuItem revertChangesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem saveGroupTransfersToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem constraintsToolStripMenuItem;
     }
 }
 

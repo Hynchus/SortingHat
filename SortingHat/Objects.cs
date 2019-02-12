@@ -14,10 +14,12 @@ namespace SortingHat
         private List<Student> students;
         private List<Constraint> constraints;
         private List<Grouping> groupings;
-
         private string currentGroupingName = "";
 
-        public string Name { get => name; set => name = value; }
+        public string Name { get => name; }
+        public List<Student> Students { get => students; }
+        public List<Constraint> Constraints { get => constraints; }
+        public List<Grouping> Groupings { get => groupings; }
         public string CurrentGroupingName 
         {
             get => currentGroupingName;
@@ -39,10 +41,15 @@ namespace SortingHat
             this.groupings = new List<Grouping>();
         }
 
+        public void renameClass(string name)
+        {
+            this.name = name;
+        }
+
         public void addGrouping(Grouping grouping)
         {
-            grouping.updateStudents(ref students);
-            groupings.Add(grouping);
+            grouping.updateStudents(ref this.students);
+            Groupings.Add(grouping);
         }
 
         public void updateGrouping(string originalGroupingName, string newGroupingName, int newGroupCount)
@@ -65,27 +72,22 @@ namespace SortingHat
 
         public Grouping getGrouping(string name)
         {
-            return groupings.Find(g => g.Name == name);
+            return Groupings.Find(g => g.Name == name);
         }
 
         public Grouping getCurrentGrouping()
         {
             try
             {
-                return groupings.Find(g => g.Name == this.currentGroupingName);
+                return Groupings.Find(g => g.Name == this.currentGroupingName);
             }
             catch { /* There is no current grouping */ }
             return null;
         }
 
-        public ref List<Grouping> getGroupings()
-        {
-            return ref groupings;
-        }
-
         public void shuffleGrouping(string groupingName)
         {
-            groupings.Find(g => g.Name == groupingName).shuffleGroups(ref students);
+            Groupings.Find(g => g.Name == groupingName).shuffleGroups(ref this.students);
             if (groupingName == currentGroupingName)
             {
                 Model.invokeCurrentGroupingChanged();
@@ -94,26 +96,32 @@ namespace SortingHat
 
         public void removeGrouping(string name)
         {
-            groupings.Remove(getGrouping(name));
+            Groupings.Remove(getGrouping(name));
             if (currentGroupingName == name)
             {
                 CurrentGroupingName = "";
             }
         }
 
+        private void sortStudents()
+        {
+            this.Students.Sort(Utilities.StudentAlphabeticalComparison);
+        }
+
         public void addStudent(Student student)
         {
-            students.Add(student);
-            foreach (Grouping grouping in groupings)
+            Students.Add(student);
+            foreach (Grouping grouping in Groupings)
             {
                 grouping.addStudent(student);
             }
+            sortStudents();
         }
 
         public void removeStudent(Student student)
         {
-            students.Remove(student);
-            foreach (Grouping grouping in groupings)
+            Students.Remove(student);
+            foreach (Grouping grouping in Groupings)
             {
                 grouping.removeStudent(student);
             }
@@ -122,15 +130,16 @@ namespace SortingHat
         public void updateStudents(List<Student> students)
         {
             this.students = students;
-            foreach (Grouping grouping in groupings)
+            foreach (Grouping grouping in Groupings)
             {
                 grouping.updateStudents(ref students);
             }
+            sortStudents();
         }
 
-        public ref List<Student> getStudents()
+        public void updateConstraints(List<Constraint> constraints)
         {
-            return ref this.students;
+            this.constraints = constraints;
         }
     }
 
@@ -179,11 +188,16 @@ namespace SortingHat
 
         public bool containsStudent(Student student)
         {
-            foreach (Group group in Groups)
+            foreach (Group group in this.groups)
             {
-                if (group.containsStudent(student))
+                try
                 {
+                    group.Students.Where(s => s.Name == student.Name).First();
                     return true;
+                }
+                catch
+                {
+                    // Group doesn't contain student
                 }
             }
             return false;
@@ -196,7 +210,11 @@ namespace SortingHat
             {
                 foreach (Student student in group.Students)
                 {
-                    if (!students.Contains(student))
+                    try
+                    {
+                        students.Where(s => s.Name == student.Name).First();   // Throws if there isn't a match
+                    }
+                    catch
                     {
                         missingStudents.Add(student);
                     }
@@ -343,11 +361,19 @@ namespace SortingHat
     [Serializable]
     public class Constraint
     {
-        
+        private List<Student> students;
 
-        public Constraint(Student studentOne, Student studentTwo)
+        public List<Student> Students { get => students; }
+
+
+        public void updateConstraint(List<Student> students)
         {
+            this.students = students;
+        }
 
+        public Constraint(List<Student> students)
+        {
+            updateConstraint(students);
         }
     }
 

@@ -73,6 +73,12 @@
     <Compile Include="ClassEditForm.Designer.cs">
       <DependentUpon>ClassEditForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ConstraintsEditForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConstraintsEditForm.Designer.cs">
+      <DependentUpon>ConstraintsEditForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="FileHandler.cs" />
     <Compile Include="GroupDisplay.cs">
       <SubType>UserControl</SubType>
@@ -111,6 +117,9 @@
     <Compile Include="Utilities.cs" />
     <EmbeddedResource Include="ClassEditForm.resx">
       <DependentUpon>ClassEditForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConstraintsEditForm.resx">
+      <DependentUpon>ConstraintsEditForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GroupDisplay.resx">
       <DependentUpon>GroupDisplay.cs</DependentUpon>
@@ -153,6 +162,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="resources\Help.png" />
     <Content Include="sortinghaticon.ico" />
   </ItemGroup>
   <ItemGroup>

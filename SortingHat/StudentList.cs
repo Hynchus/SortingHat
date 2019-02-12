@@ -15,17 +15,20 @@ namespace SortingHat
         public enum Change { Added, Removed }
         private bool currentlyDragging = false;
         private DragDropEffects dragType = DragDropEffects.Move;
+        private bool receiveDrop = true;
         private List<Student> students;
         private List<Tuple<Student, Change>> changes = new List<Tuple<Student, Change>>();
 
-        public DragDropEffects CopyDrag { get => dragType; set => dragType = value; }
+        public DragDropEffects DragMethod { get => dragType; set => dragType = value; }
         public List<Student> Students { get => students; }
+        public bool ReceiveDrop { get => receiveDrop; set => receiveDrop = value; }
 
         public StudentList()
         {
             InitializeComponent();
             ListBox.DisplayMember = "Name";
             ListBox.ValueMember = "Name";
+            updateStudentList();
         }
 
         private void refreshStudentList()
@@ -80,6 +83,7 @@ namespace SortingHat
         {
             foreach (Student student in students)
             {
+                if (this.students.Contains(student)) { continue; }
                 this.students.Add(student);
                 recordChange(student, Change.Added);
             }
@@ -129,12 +133,14 @@ namespace SortingHat
         private void ListBox_DragEnter(object sender, DragEventArgs e)
         {
             if (this.currentlyDragging) { return; }
+            if (!e.Data.GetDataPresent(typeof(List<Student>))) { return; }
             e.Effect = DragDropEffects.All;
         }
 
         private void ListBox_DragDrop(object sender, DragEventArgs e)
         {
             if (!e.Data.GetDataPresent(typeof(List<Student>))) { return; }
+            if (!receiveDrop) { return; }
             List<Student> newStudents = (List<Student>)e.Data.GetData(typeof(List<Student>));
             appendStudentList(newStudents);
         }
