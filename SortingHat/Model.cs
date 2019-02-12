@@ -71,10 +71,7 @@ namespace SortingHat
 
         public static void saveCurrentClass()
         {
-            if (currentClass == null)
-            {
-                return;
-            }
+            if (currentClass == null) { return; }
             FileHandler.saveClass(currentClass);
         }
 

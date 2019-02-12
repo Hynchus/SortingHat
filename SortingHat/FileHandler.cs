@@ -107,7 +107,7 @@ namespace SortingHat
             groupListFormat.Size = 12;
             document.InsertParagraph(grouping.Name + Environment.NewLine, false, groupingNameFormat).Alignment = Alignment.center;
             document.InsertParagraph(classname + Environment.NewLine, false, classNameFormat).Alignment = Alignment.right;
-            foreach (Group group in grouping.groups)
+            foreach (Group group in grouping.Groups)
             {
                 if (group.Colour == SystemColors.Control)
                 {

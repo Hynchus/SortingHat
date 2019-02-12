@@ -47,12 +47,7 @@ namespace SortingHat
         {
             this.group = group;
             GroupNameTextbox.Text = group.Name;
-            List<Student> studentList = group.getStudents();
-            studentList.Sort(Utilities.StudentAlphabeticalComparison);
-            foreach (Student student in studentList)
-            {
-                GroupListbox.Items.Add(student.Name);
-            }
+            StudentList.updateStudentList(group.Students);
             refreshCosmetics();
         }
 
@@ -78,6 +73,16 @@ namespace SortingHat
                 group.Colour = GroupColourDialog.Color;
                 refreshCosmetics();
             }
+        }
+
+        public Group getCurrentGroup()
+        {
+            return new Group(this.group.Name, StudentList.Students);
+        }
+
+        public List<Tuple<Student, StudentList.Change>> getChanges()
+        {
+            return this.StudentList.getChanges();
         }
     }
 }

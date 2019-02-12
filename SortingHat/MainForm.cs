@@ -141,7 +141,7 @@ namespace SortingHat
                     ((ToolStripMenuItem)button).Checked = false;
                 }
             }
-            GroupingDisplayPanel.displayGrouping(Model.currentClass.getGrouping(Model.currentClass.CurrentGroupingName));
+            GroupingDisplayPanel.displayGrouping(Model.currentClass.getCurrentGrouping());
         }
 
         private void loadCurrentClass(object sender, EventArgs e)
@@ -278,7 +278,7 @@ namespace SortingHat
                         break;
                     }
                 }
-                Model.currentClass.updateGrouping(originalGroupingName, new Grouping(groupingForm.groupingName, groupingForm.groupCount));
+                Model.currentClass.updateGrouping(originalGroupingName, groupingForm.groupingName, groupingForm.groupCount);
             }
         }
 
@@ -318,5 +318,30 @@ namespace SortingHat
                 FileHandler.exportToWord(saveFileDialog.FileName, Model.currentClass.getGrouping(Model.currentClass.CurrentGroupingName), Model.currentClass.Name);
             }
         }
+
+        private bool checkForGroupChanges()
+        {
+            return GroupingDisplayPanel.groupChangesExist();
+        }
+
+        /*
+        private void revertChangesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            GroupingDisplayPanel.displayGrouping(Model.currentClass.getCurrentGrouping());
+        }
+
+        private void GroupingDisplaybtn_Click(object sender, EventArgs e)
+        {
+            bool showTransferButtons = checkForGroupChanges();
+            saveGroupTransfersToolStripMenuItem.Visible = showTransferButtons;
+            revertChangesToolStripMenuItem.Visible = showTransferButtons;
+        }
+
+
+        private void saveGroupTransfersToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+        */
     }
 }

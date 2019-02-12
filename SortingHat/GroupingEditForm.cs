@@ -44,8 +44,8 @@ namespace SortingHat
             if (grouping != null)
             {
                 GroupingNametxtbox.Text = grouping.Name;
-                GroupCountTrackbar.Value = grouping.groups.Count;
-                originalGroupCount = grouping.groups.Count;
+                GroupCountTrackbar.Value = grouping.Groups.Count;
+                originalGroupCount = grouping.Groups.Count;
             }
         }
 
