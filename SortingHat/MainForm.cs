@@ -38,7 +38,7 @@ namespace SortingHat
 
         private void loadClassNames()
         {
-            //clearClassButtons();
+            clearClassButtons();
             foreach (string className in Model.getClassNames())
             {
                 addClassButton(className);
@@ -183,12 +183,18 @@ namespace SortingHat
 
         private void clearClassButtons()
         {
+            List<ToolStripItem> structuralItems = new List<ToolStripItem>();
             foreach (ToolStripItem item in classToolStripMenuItem.DropDownItems)
             {
-                if ((string)item.Tag != "Structural")
+                if ((string)item.Tag == "Structural")
                 {
-                    classToolStripMenuItem.DropDownItems.Remove(item);
+                    structuralItems.Add(item);
                 }
+            }
+            classToolStripMenuItem.DropDownItems.Clear();
+            foreach (ToolStripItem item in structuralItems)
+            {
+                classToolStripMenuItem.DropDownItems.Add(item);
             }
         }
 
@@ -365,7 +371,7 @@ namespace SortingHat
                 string importedItems = "";
                 foreach (string item in importedFiles)
                 {
-                    importedItems = Environment.NewLine + " - " + FileHandler.getClassName(item);
+                    importedItems += Environment.NewLine + " - " + FileHandler.getClassName(item);
                 }
                 MessageBox.Show("The following classes were imported:" + importedItems, "Import successful", MessageBoxButtons.OK);
             }
@@ -383,7 +389,7 @@ namespace SortingHat
             if (exportFolderDialog.ShowDialog() != DialogResult.OK) { return; }
             FileHandler.setSharingFolder(exportFolderDialog.SelectedPath);
 
-            List<string> exportedClasses = checklist.checkedItems;
+            List<string> exportedClasses = checklist.checkedItems.ToList();
             foreach (string className in checklist.checkedItems)
             {
                 if (!FileHandler.exportClassFile(className, exportFolderDialog.SelectedPath))
@@ -403,7 +409,7 @@ namespace SortingHat
                 string exportedItems = "";
                 foreach (string item in exportedClasses)
                 {
-                    exportedItems = Environment.NewLine + " - " + item + FileHandler.CLASS_FILE_EXTENSION;
+                    exportedItems += Environment.NewLine + " - " + item + FileHandler.CLASS_FILE_EXTENSION;
                 }
                 MessageBox.Show("The following files can be found at '" + exportFolderDialog.SelectedPath + "':" + exportedItems, "Export successful", MessageBoxButtons.OK);
             }
