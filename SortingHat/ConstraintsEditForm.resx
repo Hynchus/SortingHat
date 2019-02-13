@@ -127,7 +127,7 @@ To use, click New Constraint Group and then click and drag students from the Stu
 To remove students from a Constraint Group click and drag them from that group back to the Student List.
 
 Note: If a Constraint Group is empty or contains only one student on Save, it will be removed (as it serves no purpose).
-Note: New Constraints will not affect already existing Groupings.
+Note: New Constraints will not affect already existing Groups.
    </value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
