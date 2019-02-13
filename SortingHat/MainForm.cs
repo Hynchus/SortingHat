@@ -48,6 +48,7 @@ namespace SortingHat
         public MainForm()
         {
             InitializeComponent();
+            Model.CheckForUpdates();
         }
 
         private void MainForm_Load(object sender, EventArgs e)
