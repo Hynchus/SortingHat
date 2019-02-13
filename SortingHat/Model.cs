@@ -71,10 +71,7 @@ namespace SortingHat
 
         public static void saveCurrentClass()
         {
-            if (currentClass == null)
-            {
-                return;
-            }
+            if (currentClass == null) { return; }
             FileHandler.saveClass(currentClass);
         }
 
@@ -83,6 +80,16 @@ namespace SortingHat
             Class newClass = getClass(className);
             if (newClass == null) { return; }
             saveCurrentClass();
+            currentClass = newClass;
+            currentClassOriginalName = newClass.Name;
+            CurrentClassChanged.Invoke(null, null);
+        }
+
+        public static void reloadCurrentClass()
+        {
+            if (currentClass == null) { return; }
+            Class newClass = getClass(currentClass.Name);
+            if (newClass == null) { return; }
             currentClass = newClass;
             currentClassOriginalName = newClass.Name;
             CurrentClassChanged.Invoke(null, null);

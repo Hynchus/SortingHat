@@ -11,8 +11,8 @@ namespace SortingHat
 {
     static class FileHandler
     {
-        private const string DATA_FILE_EXTENSION = ".shd";
-        private const string CLASS_FILE_EXTENSION = ".shc";
+        public const string DATA_FILE_EXTENSION = ".shd";
+        public const string CLASS_FILE_EXTENSION = ".shc";
         private static string DATA_SAVE_FOLDER = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "SortingHat");
 
         private static System.Runtime.Serialization.Formatters.Binary.BinaryFormatter binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
@@ -41,11 +41,18 @@ namespace SortingHat
                     }
                 }
             }
-            catch
-            {
-                // Probably Directory doesn't exist, we ignore
-            }
+            catch { /* Probably Directory doesn't exist, we ignore */ }
             return classNames;
+        }
+
+        public static bool classExists(string className)
+        {
+            return File.Exists(getClassFileName(className));
+        }
+
+        public static string getClassName(string classFilePath)
+        {
+            return Path.GetFileNameWithoutExtension(classFilePath);
         }
 
         private static string getClassFileName(string className)
@@ -71,9 +78,9 @@ namespace SortingHat
                     wantedClass = (Class)binaryFormatter.Deserialize(stream);
                 }
             }
-            catch
-            {
-                // Likely a missing file, we'll ignore
+            catch (Exception exception) {
+                Console.Write(exception.Message);
+                /* We hit this with one file. Possibly file corruption? Haven't been able to replicate it */
             }
             return wantedClass;
         }
@@ -84,13 +91,69 @@ namespace SortingHat
             {
                 File.Delete(getClassFileName(className));
             }
-            catch
-            {
-                // File likely doesn't exist already, we'll ignore
-            }
+            catch { /* File likely doesn't exist already, we'll ignore */ }
         }
 
-        public static void exportToWord(string filepath, Grouping grouping, string classname)
+        public static bool importClassFile(string filePath, bool overwrite = false)
+        {
+            string className = Path.GetFileNameWithoutExtension(filePath);
+            string targetPath = getClassFileName(className);
+            if (File.Exists(targetPath))
+            {
+                if (overwrite)
+                {
+                    File.Delete(targetPath);
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            File.Copy(filePath, targetPath);
+            return true;
+        }
+
+        public static bool exportClassFile(string className, string folderPath, bool overwrite = false)
+        {
+            string classFilePath = getClassFileName(className);
+            string targetPath = Path.Combine(folderPath, Path.GetFileName(classFilePath));
+            if (File.Exists(targetPath))
+            {
+                if (overwrite)
+                {
+                    File.Delete(targetPath);
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            File.Copy(classFilePath, targetPath);
+            return true;
+        }
+
+        public static void setSharingFolder(string folderPath)
+        {
+            if (!Directory.Exists(folderPath))
+            {
+                folderPath = Path.GetDirectoryName(folderPath);
+            }
+            if (!Directory.Exists(folderPath)) { return; }
+            Properties.Settings.Default.SharingFolder = folderPath;
+            Properties.Settings.Default.Save();
+        }
+
+        public static string getSharingFolder()
+        {
+            string folderPath = Properties.Settings.Default.SharingFolder;
+            if (!Directory.Exists(folderPath))
+            {
+                folderPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Desktop);
+            }
+            return folderPath;
+        }
+
+        public static void exportGroupingToWord(string filepath, Grouping grouping, string classname)
         {
             DocX document = DocX.Create(filepath);
             Formatting groupingNameFormat = new Formatting();
