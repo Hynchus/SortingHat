@@ -72,7 +72,8 @@
             // 
             this.Savebtn.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.Savebtn.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.Savebtn.Location = new System.Drawing.Point(49, 262);
+            this.Savebtn.Enabled = false;
+            this.Savebtn.Location = new System.Drawing.Point(49, 282);
             this.Savebtn.Name = "Savebtn";
             this.Savebtn.Size = new System.Drawing.Size(96, 37);
             this.Savebtn.TabIndex = 4;
@@ -84,7 +85,7 @@
             // 
             this.Cancelbtn.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.Cancelbtn.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.Cancelbtn.Location = new System.Drawing.Point(171, 262);
+            this.Cancelbtn.Location = new System.Drawing.Point(171, 282);
             this.Cancelbtn.Name = "Cancelbtn";
             this.Cancelbtn.Size = new System.Drawing.Size(96, 37);
             this.Cancelbtn.TabIndex = 5;
@@ -119,7 +120,7 @@
             // 
             this.ShuffleWarninglbl.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.ShuffleWarninglbl.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.ShuffleWarninglbl.Location = new System.Drawing.Point(49, 218);
+            this.ShuffleWarninglbl.Location = new System.Drawing.Point(49, 230);
             this.ShuffleWarninglbl.Name = "ShuffleWarninglbl";
             this.ShuffleWarninglbl.Size = new System.Drawing.Size(218, 41);
             this.ShuffleWarninglbl.TabIndex = 7;
@@ -129,10 +130,11 @@
             // 
             // GroupingEditForm
             // 
+            this.AcceptButton = this.Savebtn;
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.Cancelbtn;
-            this.ClientSize = new System.Drawing.Size(316, 324);
+            this.ClientSize = new System.Drawing.Size(316, 344);
             this.Controls.Add(this.ShuffleWarninglbl);
             this.Controls.Add(this.GroupCountNumberlbl);
             this.Controls.Add(this.GroupCountTrackbar);

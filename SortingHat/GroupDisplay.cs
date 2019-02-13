@@ -28,6 +28,7 @@ namespace SortingHat
         {
             this.BackColor = group.Colour;
             GroupNameTextbox.BackColor = group.Colour;
+            GroupColourbtn.BackColor = group.Colour;
             float brightness = group.Colour.GetBrightness();
             if (group.Colour.GetBrightness() > 0.49f)
             {

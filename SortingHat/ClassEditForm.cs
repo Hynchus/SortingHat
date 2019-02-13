@@ -60,6 +60,7 @@ namespace SortingHat
         {
             this.className = ClassNametxtbox.Text;
             this.studentNames = StudentNamestxtbox.Text.Split('\n').ToList<string>();
+            this.studentNames.RemoveAll(s => s.Trim() == "");
             this.Close();
         }
 
