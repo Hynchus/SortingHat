@@ -16,6 +16,19 @@ namespace SortingHat
         public static Class currentClass = null;
 
 
+        public static void CheckForUpdates()
+        {
+            // Handle updating the program
+
+            // Handle updating the settings
+            if (Properties.Settings.Default.UpgradeSettings)
+            {
+                Properties.Settings.Default.Upgrade();
+                Properties.Settings.Default.UpgradeSettings = false;
+                Properties.Settings.Default.Save();
+            }
+        }
+
         public static void Shuffle<T>(this IList<T> list)
         {
             int index = list.Count - 1;
