@@ -97,7 +97,7 @@ namespace SortingHat
 
         public static void updateCurrentClass(string className, List<string> studentNames)
         {
-            currentClass.Name = className;
+            currentClass.renameClass(className);
             List<Student> students = new List<Student>();
             foreach (string studentName in studentNames)
             {

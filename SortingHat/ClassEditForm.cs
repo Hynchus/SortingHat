@@ -19,13 +19,14 @@ namespace SortingHat
         {
             Class existingClass = Model.getClass(className);
             ClassNametxtbox.Text = existingClass.Name;
-            StudentNamestxtbox.Text = string.Join(Environment.NewLine, existingClass.getStudents().Select(s => s.Name).ToList());
+            StudentNamestxtbox.Text = string.Join(Environment.NewLine, existingClass.Students.Select(s => s.Name).ToList());
         }
 
         private void loadSettings()
         {
             this.Location = Properties.Settings.Default.ClassEditFormLocation;
             this.Size = Properties.Settings.Default.ClassEditFormSize;
+            this.BackColor = Properties.Settings.Default.ColourTheme;
         }
 
         private void saveSettings()

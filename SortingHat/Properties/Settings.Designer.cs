@@ -130,5 +130,29 @@ namespace SortingHat.Properties {
                 this["SharingFolder"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0, 0")]
+        public global::System.Drawing.Size ConstraintsEditFormSize {
+            get {
+                return ((global::System.Drawing.Size)(this["ConstraintsEditFormSize"]));
+            }
+            set {
+                this["ConstraintsEditFormSize"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0, 0")]
+        public global::System.Drawing.Point ConstraintsEditFormLocation {
+            get {
+                return ((global::System.Drawing.Point)(this["ConstraintsEditFormLocation"]));
+            }
+            set {
+                this["ConstraintsEditFormLocation"] = value;
+            }
+        }
     }
 }

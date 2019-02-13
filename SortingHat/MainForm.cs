@@ -17,6 +17,7 @@ namespace SortingHat
         {
             this.Location = Properties.Settings.Default.MainFormLocation;
             this.Size = Properties.Settings.Default.MainFormSize;
+            this.BackColor = Properties.Settings.Default.ColourTheme;
             Model.setCurrentClass(Properties.Settings.Default.CurrentClass);
         }
 
@@ -108,7 +109,7 @@ namespace SortingHat
         private void loadGroupings()
         {
             unloadGroupings();
-            foreach (Grouping grouping in Model.currentClass.getGroupings())
+            foreach (Grouping grouping in Model.currentClass.Groupings)
             {
                 addGroupingButton(grouping.Name);
             }
@@ -143,7 +144,7 @@ namespace SortingHat
                     ((ToolStripMenuItem)button).Checked = false;
                 }
             }
-            GroupingDisplayPanel.displayGrouping(Model.currentClass.getGrouping(Model.currentClass.CurrentGroupingName));
+            GroupingDisplayPanel.displayGrouping(Model.currentClass.getCurrentGrouping());
         }
 
         private void loadCurrentClass(object sender, EventArgs e)
@@ -291,7 +292,7 @@ namespace SortingHat
                         break;
                     }
                 }
-                Model.currentClass.updateGrouping(originalGroupingName, new Grouping(groupingForm.groupingName, groupingForm.groupCount));
+                Model.currentClass.updateGrouping(originalGroupingName, groupingForm.groupingName, groupingForm.groupCount);
             }
         }
 
@@ -405,6 +406,22 @@ namespace SortingHat
                     exportedItems = Environment.NewLine + " - " + item + FileHandler.CLASS_FILE_EXTENSION;
                 }
                 MessageBox.Show("The following files can be found at '" + exportFolderDialog.SelectedPath + "':" + exportedItems, "Export successful", MessageBoxButtons.OK);
+            }
+        }
+
+        private bool checkForGroupChanges()
+        {
+            return GroupingDisplayPanel.groupChangesExist();
+        }
+
+        private void constraintsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ConstraintsEditForm constraintsForm = new ConstraintsEditForm(Model.currentClass.Students, Model.currentClass.Constraints);
+            constraintsForm.ShowDialog();
+            if (constraintsForm.DialogResult == DialogResult.OK)
+            {
+                Model.currentClass.updateConstraints(constraintsForm.Constraints);
+                Model.saveCurrentClass();
             }
         }
     }

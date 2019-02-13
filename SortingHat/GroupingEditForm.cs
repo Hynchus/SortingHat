@@ -22,6 +22,7 @@ namespace SortingHat
         {
             this.Location = Properties.Settings.Default.GroupingEditFormLocation;
             this.Size = Properties.Settings.Default.GroupingEditFormSize;
+            this.BackColor = Properties.Settings.Default.ColourTheme;
         }
 
         private void saveSettings()
@@ -44,50 +45,20 @@ namespace SortingHat
             if (grouping != null)
             {
                 GroupingNametxtbox.Text = grouping.Name;
-                GroupCountTrackbar.Value = grouping.groups.Count;
-                originalGroupCount = grouping.groups.Count;
+                GroupCountTrackbar.Value = grouping.Groups.Count;
+                originalGroupCount = grouping.Groups.Count;
             }
         }
 
         private void validateGrouping()
         {
             // Ugly ugly, very ugly
-            if (GroupingNamelbl.ForeColor == Color.Green)
-            {
-                Savebtn.Enabled = true;
-            }
-            else
-            {
-                Savebtn.Enabled = false;
-            }
+            Savebtn.Enabled = (GroupingNamelbl.ForeColor == Color.Green);
         }
-        /*
-        private void GroupCounttxtbox_TextChanged(object sender, EventArgs e)
-        {
-            int groupCount = -1;
-            try
-            {
-                groupCount = int.Parse(GroupCounttxtbox.Text);
-            }
-            catch
-            {
-                // groupCount stays as -1, result is invalid input.
-            }
-            if (groupCount > 0 && groupCount < 100)
-            {
-                GroupCountlbl.ForeColor = Color.Green;
-                validateGrouping();
-            }
-            else
-            {
-                GroupCountlbl.ForeColor = Color.Red;
-                validateGrouping();
-            }
-        }
-        */
+
         private void GroupingNametxtbox_TextChanged(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(GroupingNametxtbox.Text) || (GroupingNametxtbox.Text != groupingName && Model.currentClass.getGroupings().Exists(g => g.Name == GroupingNametxtbox.Text)))
+            if (string.IsNullOrWhiteSpace(GroupingNametxtbox.Text) || (GroupingNametxtbox.Text != groupingName && Model.currentClass.Groupings.Exists(g => g.Name == GroupingNametxtbox.Text)))
             {
                 GroupingNamelbl.ForeColor = Color.Red;
                 validateGrouping();

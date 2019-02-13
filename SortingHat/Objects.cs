@@ -12,11 +12,14 @@ namespace SortingHat
     {
         private string name;
         private List<Student> students;
+        private List<Constraint> constraints;
         private List<Grouping> groupings;
-
         private string currentGroupingName = "";
 
-        public string Name { get => name; set => name = value; }
+        public string Name { get => name; }
+        public List<Student> Students { get => students; }
+        public List<Constraint> Constraints { get => constraints; }
+        public List<Grouping> Groupings { get => groupings; }
         public string CurrentGroupingName 
         {
             get => currentGroupingName;
@@ -32,45 +35,59 @@ namespace SortingHat
 
         public Class(string name)
         {
-            this.Name = name;
-            students = new List<Student>();
-            groupings = new List<Grouping>();
+            this.name = name;
+            this.students = new List<Student>();
+            this.constraints = new List<Constraint>();
+            this.groupings = new List<Grouping>();
+        }
+
+        public void renameClass(string name)
+        {
+            this.name = name;
         }
 
         public void addGrouping(Grouping grouping)
         {
-            grouping.updateStudents(ref students);
-            groupings.Add(grouping);
+            grouping.updateStudents(ref this.students);
+            Groupings.Add(grouping);
         }
 
-        public void updateGrouping(string groupingName, Grouping updatedGrouping)
+        public void updateGrouping(string originalGroupingName, string newGroupingName, int newGroupCount)
         {
-            Grouping originalGrouping = getGrouping(groupingName);
-            originalGrouping.Name = updatedGrouping.Name;
-            if (currentGroupingName == groupingName)
+            Grouping originalGrouping = getGrouping(originalGroupingName);
+            originalGrouping.Name = newGroupingName;
+            if (currentGroupingName == originalGroupingName)
             {
-                currentGroupingName = updatedGrouping.Name;
+                currentGroupingName = newGroupingName;
             }
-            if (originalGrouping.changeGroupCount(updatedGrouping.groups.Count))
+            if (originalGrouping.changeGroupCount(newGroupCount))
             {
-                originalGrouping.shuffleGroups(ref students);
+                originalGrouping.shuffleGroups(ref this.students);
             }
-            Model.invokeCurrentGroupingChanged();
+            if (Model.currentClass == this && this.currentGroupingName == newGroupingName)
+            {
+                Model.invokeCurrentGroupingChanged();
+            }
         }
 
         public Grouping getGrouping(string name)
         {
-            return groupings.Find(g => g.Name == name);
+            return Groupings.Find(g => g.Name == name);
         }
 
-        public ref List<Grouping> getGroupings()
+        public Grouping getCurrentGrouping()
         {
-            return ref groupings;
+            try
+            {
+                return Groupings.Find(g => g.Name == this.currentGroupingName);
+            }
+            catch { /* There is no current grouping */ }
+            return null;
         }
 
         public void shuffleGrouping(string groupingName)
         {
-            groupings.Find(g => g.Name == groupingName).shuffleGroups(ref students);
+            Groupings.Find(g => g.Name == groupingName).shuffleGroups(ref this.students);
             if (groupingName == currentGroupingName)
             {
                 Model.invokeCurrentGroupingChanged();
@@ -79,26 +96,32 @@ namespace SortingHat
 
         public void removeGrouping(string name)
         {
-            groupings.Remove(getGrouping(name));
+            Groupings.Remove(getGrouping(name));
             if (currentGroupingName == name)
             {
                 CurrentGroupingName = "";
             }
         }
 
+        private void sortStudents()
+        {
+            this.Students.Sort(Utilities.StudentAlphabeticalComparison);
+        }
+
         public void addStudent(Student student)
         {
-            students.Add(student);
-            foreach (Grouping grouping in groupings)
+            Students.Add(student);
+            foreach (Grouping grouping in Groupings)
             {
                 grouping.addStudent(student);
             }
+            sortStudents();
         }
 
         public void removeStudent(Student student)
         {
-            students.Remove(student);
-            foreach (Grouping grouping in groupings)
+            Students.Remove(student);
+            foreach (Grouping grouping in Groupings)
             {
                 grouping.removeStudent(student);
             }
@@ -107,15 +130,33 @@ namespace SortingHat
         public void updateStudents(List<Student> students)
         {
             this.students = students;
-            foreach (Grouping grouping in groupings)
+            foreach (Grouping grouping in Groupings)
             {
                 grouping.updateStudents(ref students);
             }
+            sortStudents();
         }
 
-        public ref List<Student> getStudents()
+        public void updateConstraints(List<Constraint> constraints)
         {
-            return ref this.students;
+            this.constraints = constraints;
+            foreach (Student student in this.students)
+            {
+                student.ConstraintGroups = new List<int>();
+            }
+            int constraintGroupNumber = 0;
+            foreach (Constraint constraint in this.constraints)
+            {
+                foreach (Student student in constraint.Students)
+                {
+                    student.ConstraintGroups.Add(constraintGroupNumber);
+                }
+                constraintGroupNumber++;
+            }
+            foreach (Grouping grouping in this.groupings)
+            {
+                grouping.refreshConstraints();
+            }
         }
     }
 
@@ -124,37 +165,38 @@ namespace SortingHat
     public class Grouping
     {
         private string name;
-        
-        public List<Group> groups;
+
+        private List<Group> groups;
 
         public string Name { get => name; set => name = value; }
+        public List<Group> Groups { get => groups; }
 
         public Grouping(string name, int groupCount)
         {
-            this.Name = name;
+            this.name = name;
             changeGroupCount(groupCount);
         }
 
         public bool changeGroupCount(int groupCount)
         {
             if (groupCount <= 0) { throw new ArgumentOutOfRangeException("groupCount", "Group count cannot be equal to or less than 0."); }
-            if (groups != null && groupCount == groups.Count) { return false; }
-            if (groups == null) { groups = new List<Group>(); }
-            while (groups.Count > groupCount)
+            if (Groups != null && groupCount == Groups.Count) { return false; }
+            if (Groups == null) { this.groups = new List<Group>(); }
+            while (Groups.Count > groupCount)
             {
-                groups.RemoveAt(groups.Count - 1);
+                Groups.RemoveAt(Groups.Count - 1);
             }
-            while (groups.Count < groupCount)
+            while (Groups.Count < groupCount)
             {
-                string groupName = "Group " + (groups.Count + 1).ToString();
-                groups.Add(new Group(groupName));
+                string groupName = "Group " + (Groups.Count + 1).ToString();
+                Groups.Add(new Group(groupName));
             }
             return true;
         }
 
         public void shuffleGroups(ref List<Student> students)
         {
-            foreach (Group group in groups)
+            foreach (Group group in Groups)
             {
                 group.clearStudents();
             }
@@ -163,11 +205,16 @@ namespace SortingHat
 
         public bool containsStudent(Student student)
         {
-            foreach (Group group in groups)
+            foreach (Group group in this.groups)
             {
-                if (group.containsStudent(student))
+                try
                 {
+                    group.Students.Where(s => s.Name == student.Name).First();
                     return true;
+                }
+                catch
+                {
+                    // Group doesn't contain student
                 }
             }
             return false;
@@ -176,11 +223,15 @@ namespace SortingHat
         public List<Student> getMissingStudents(ref List<Student> students)
         {
             List<Student> missingStudents = new List<Student>();
-            foreach (Group group in groups)
+            foreach (Group group in Groups)
             {
-                foreach (Student student in group.getStudents())
+                foreach (Student student in group.Students)
                 {
-                    if (!students.Contains(student))
+                    try
+                    {
+                        students.Where(s => s.Name == student.Name).First();   // Throws if there isn't a match
+                    }
+                    catch
                     {
                         missingStudents.Add(student);
                     }
@@ -204,7 +255,7 @@ namespace SortingHat
 
         public void removeStudent(Student student)
         {
-            foreach (Group group in groups)
+            foreach (Group group in Groups)
             {
                 if (group.removeStudent(student))
                 {
@@ -221,22 +272,86 @@ namespace SortingHat
             }
         }
 
-        private Group getSmallestGroup()
+        private Group getSmallestGroup(List<int> constraintGroupsToAvoid = null)
         {
+            if (constraintGroupsToAvoid == null) { constraintGroupsToAvoid = new List<int>(); }
             Group smallestGroup = null;
-            foreach (Group group in groups)
+            Group smallestConstraintFreeGroup = null;
+            foreach (Group group in this.groups)
             {
                 if (smallestGroup == null || (group.getStudentCount() < smallestGroup.getStudentCount()))
                 {
                     smallestGroup = group;
                 }
+                if (smallestConstraintFreeGroup == null || (group.getStudentCount() < smallestConstraintFreeGroup.getStudentCount()))
+                {
+                    bool constraintFree = true;
+                    foreach (Student student in group.Students)
+                    {
+                        if (student.ConstraintGroups.Intersect(constraintGroupsToAvoid).Any())
+                        {
+                            constraintFree = false;
+                            break;
+                        }
+                    }
+                    if (constraintFree)
+                    {
+                        smallestConstraintFreeGroup = group;
+                    }
+                }
+            }
+            if (smallestConstraintFreeGroup != null)
+            {
+                return smallestConstraintFreeGroup;
             }
             return smallestGroup;
         }
 
+        public bool resolveConstraintConflict(Student student, Group group)
+        {
+            group.removeStudent(student);
+            foreach (Group prospectiveGroup in this.groups)
+            {
+                if (prospectiveGroup == group) { continue; }
+                foreach (Student prospectiveStudent in prospectiveGroup.Students.ToList())  // Create separate copy of student list to avoid modification errors.
+                {
+                    if (prospectiveStudent.ConstraintGroups.Intersect(group.ConstraintGroups).Any()) { continue; }
+                    prospectiveGroup.removeStudent(prospectiveStudent);
+                    if (student.ConstraintGroups.Intersect(prospectiveGroup.ConstraintGroups).Any())
+                    {
+                        prospectiveGroup.addStudent(prospectiveStudent);
+                        continue;
+                    }
+                    else // Success!
+                    {
+                        group.addStudent(prospectiveStudent);
+                        prospectiveGroup.addStudent(student);
+                        return true;
+                    }
+                }
+            }
+            group.addStudent(student);
+            return false;
+        }
+
+        public void resolveConstraintConflicts()
+        {
+            foreach (Group group in this.groups)
+            {
+                foreach (Student student in group.Students.ToList())  // Create separate copy of student list to avoid modification errors.
+                {
+                    List<int> constraintOffences = group.getConstraintOffences();
+                    if (student.ConstraintGroups.Intersect(constraintOffences).Any())
+                    {
+                        resolveConstraintConflict(student, group);
+                    }
+                }
+            }
+        }
+
         public void addStudent(Student student)
         {
-            getSmallestGroup().addStudent(student);
+            getSmallestGroup(student.ConstraintGroups).addStudent(student);
         }
 
         public void addStudents(List<Student> students)
@@ -246,12 +361,21 @@ namespace SortingHat
             {
                 addStudent(student);
             }
+            resolveConstraintConflicts();
         }
 
         public void updateStudents(ref List<Student> students)
         {
             removeStudents(getMissingStudents(ref students));
             addStudents(getNewStudents(ref students));
+        }
+
+        public void refreshConstraints()
+        {
+            foreach (Group group in this.groups)
+            {
+                group.refreshConstraintGroups();
+            }
         }
     }
 
@@ -262,34 +386,57 @@ namespace SortingHat
         private string name;
         private Color colour = SystemColors.Control;
         private List<Student> students;
+        private List<int> constraintGroups = new List<int>();
 
         public string Name { get => name; set => name = value; }
         public Color Colour { get => colour; set => colour = value; }
+        public List<Student> Students { get => students; }
+        public List<int> ConstraintGroups { get => constraintGroups; }
 
-        public Group(string groupName)
+        public Group(string groupName, List<Student> students = null)
         {
             Name = groupName;
-            students = new List<Student>();
+            if (students == null)
+            {
+                this.students = new List<Student>();
+            }
+            else
+            {
+                addStudents(students);
+            }
         }
 
         public int getStudentCount()
         {
-            return students.Count;
+            return this.students.Count;
         }
 
         public bool addStudent(Student student)
         {
-            if (students.Contains(student))
+            if (this.students.Contains(student))
             {
                 return false;
             }
-            students.Add(student);
+            this.students.Add(student);
+            this.ConstraintGroups.AddRange(student.ConstraintGroups);
             return true;
+        }
+
+        public void addStudents(List<Student> students)
+        {
+            foreach (Student student in students)
+            {
+                addStudent(student);
+            }
         }
 
         public bool removeStudent(Student student)
         {
-            return students.Remove(student);
+            foreach (int constraintGroup in student.ConstraintGroups)
+            {
+                this.constraintGroups.Remove(constraintGroup);
+            }
+            return this.students.Remove(student);
         }
 
         public void removeStudents(List<Student> students)
@@ -302,40 +449,77 @@ namespace SortingHat
 
         public bool containsStudent(Student student)
         {
-            return students.Contains(student);
-        }
-
-        public List<Student> getStudents()
-        {
-            return students;
+            return this.students.Contains(student);
         }
 
         public List<string> getStudentNames()
         {
-            return students.Select(s => s.Name).ToList<string>();
+            return this.students.Select(s => s.Name).ToList<string>();
         }
 
         public void clearStudents()
         {
-            students.Clear();
+            this.students.Clear();
+            if (this.constraintGroups == null) { this.constraintGroups = new List<int>(); }  // Prevents exceptions caused by old file transition
+            this.constraintGroups.Clear();
+        }
+
+        public void refreshConstraintGroups()
+        {
+            this.constraintGroups.Clear();
+            foreach (Student student in this.students)
+            {
+                this.constraintGroups.AddRange(student.ConstraintGroups);
+            }
+        }
+
+        public List<int> getConstraintOffences()
+        {
+            List<int> constraintOffences = new List<int>();
+            this.constraintGroups.Sort();
+            for (int i = 0; i < this.constraintGroups.Count-1; i++)  // Don't need to check the last one
+            {
+                if (this.constraintGroups[i] == this.constraintGroups[i+1])
+                {
+                    constraintOffences.Add(this.constraintGroups[i]);
+                }
+            }
+            return constraintOffences;
         }
     }
 
+    [Serializable]
+    public class Constraint
+    {
+        private List<Student> students;
+
+        public List<Student> Students { get => students; }
+
+
+        public void updateConstraint(List<Student> students)
+        {
+            this.students = students;
+        }
+
+        public Constraint(List<Student> students)
+        {
+            updateConstraint(students);
+        }
+    }
 
     [Serializable]
     public class Student
     {
         private string name;
+        private List<int> constraintGroups = new List<int>();
+
+        public string Name { get => name; set => name = value.Trim(); }
+        public List<int> ConstraintGroups { get => constraintGroups; set => constraintGroups = value; }
 
         public Student(string name)
         {
             this.Name = name;
         }
 
-        public string Name 
-        {
-            get => name;
-            set => name = value.Trim();
-        }
     }
 }

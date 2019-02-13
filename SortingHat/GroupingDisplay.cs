@@ -29,7 +29,7 @@ namespace SortingHat
         {
             GroupingLayoutPanel.Controls.Clear();
             if (grouping == null) { return; }
-            foreach (Group group in grouping.groups)
+            foreach (Group group in grouping.Groups)
             {
                 GroupDisplay groupDisplay = new GroupDisplay();
                 groupDisplay.displayGroup(group);
@@ -51,6 +51,28 @@ namespace SortingHat
         private void GroupingDisplay_Load(object sender, EventArgs e)
         {
             displayGroups();
+        }
+
+        public List<Group> getCurrentGroups()
+        {
+            List<Group> groups = new List<Group>();
+            foreach (GroupDisplay groupDisplay in GroupingLayoutPanel.Controls)
+            {
+                groups.Add(groupDisplay.getCurrentGroup());
+            }
+            return groups;
+        }
+
+        public bool groupChangesExist()
+        {
+            foreach (GroupDisplay groupDisplay in GroupingLayoutPanel.Controls)
+            {
+                if (groupDisplay.getChanges().Count > 0)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }
