@@ -26,5 +26,8 @@
     <Setting Name="ColourTheme" Type="System.Drawing.Color" Scope="User">
       <Value Profile="(Default)">Control</Value>
     </Setting>
+    <Setting Name="SharingFolder" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Default</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
