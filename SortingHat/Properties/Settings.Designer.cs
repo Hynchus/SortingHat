@@ -121,6 +121,18 @@ namespace SortingHat.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Default")]
+        public string SharingFolder {
+            get {
+                return ((string)(this["SharingFolder"]));
+            }
+            set {
+                this["SharingFolder"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0, 0")]
         public global::System.Drawing.Size ConstraintsEditFormSize {
             get {

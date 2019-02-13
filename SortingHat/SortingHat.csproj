@@ -67,6 +67,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChecklistForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ChecklistForm.Designer.cs">
+      <DependentUpon>ChecklistForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="ClassEditForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -115,6 +121,9 @@
       <DependentUpon>StudentList.cs</DependentUpon>
     </Compile>
     <Compile Include="Utilities.cs" />
+    <EmbeddedResource Include="ChecklistForm.resx">
+      <DependentUpon>ChecklistForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ClassEditForm.resx">
       <DependentUpon>ClassEditForm.cs</DependentUpon>
     </EmbeddedResource>

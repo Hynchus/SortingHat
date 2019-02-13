@@ -85,6 +85,16 @@ namespace SortingHat
             CurrentClassChanged.Invoke(null, null);
         }
 
+        public static void reloadCurrentClass()
+        {
+            if (currentClass == null) { return; }
+            Class newClass = getClass(currentClass.Name);
+            if (newClass == null) { return; }
+            currentClass = newClass;
+            currentClassOriginalName = newClass.Name;
+            CurrentClassChanged.Invoke(null, null);
+        }
+
         public static void updateCurrentClass(string className, List<string> studentNames)
         {
             currentClass.renameClass(className);

@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+
 namespace SortingHat
 {
     public partial class MainForm : Form
@@ -37,6 +38,7 @@ namespace SortingHat
 
         private void loadClassNames()
         {
+            //clearClassButtons();
             foreach (string className in Model.getClassNames())
             {
                 addClassButton(className);
@@ -179,6 +181,17 @@ namespace SortingHat
             Model.setCurrentClass(((ToolStripMenuItem)sender).Text);
         }
 
+        private void clearClassButtons()
+        {
+            foreach (ToolStripItem item in classToolStripMenuItem.DropDownItems)
+            {
+                if ((string)item.Tag != "Structural")
+                {
+                    classToolStripMenuItem.DropDownItems.Remove(item);
+                }
+            }
+        }
+
         private void addClassButton(string className)
         {
             ToolStripMenuItem button = new ToolStripMenuItem(className);
@@ -303,20 +316,96 @@ namespace SortingHat
 
         private void randomizeGroupsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("Are you sure you want to shuffle the groups?", "Shuffle", MessageBoxButtons.OKCancel) == DialogResult.OK)
-            {
-                Model.currentClass.shuffleGrouping(Model.currentClass.CurrentGroupingName);
-            }
+            if (MessageBox.Show("Are you sure you want to shuffle the groups?", "Shuffle", MessageBoxButtons.OKCancel) != DialogResult.OK) { return; }
+            Model.currentClass.shuffleGrouping(Model.currentClass.CurrentGroupingName);
         }
 
         private void WordExportbtn_Click(object sender, EventArgs e)
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.InitialDirectory = FileHandler.getSharingFolder();
             saveFileDialog.DefaultExt = ".docx";
             saveFileDialog.Filter = "Word Document (*.docx)|*.docx";
-            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            if (saveFileDialog.ShowDialog() != DialogResult.OK) { return; }
+            FileHandler.exportGroupingToWord(saveFileDialog.FileName, Model.currentClass.getGrouping(Model.currentClass.CurrentGroupingName), Model.currentClass.Name);
+            FileHandler.setSharingFolder(saveFileDialog.FileName);
+        }
+
+        private void importClass(object sender, EventArgs e)
+        {
+            Model.saveCurrentClass();
+            OpenFileDialog importFileDialog = new OpenFileDialog();
+            importFileDialog.Title = "Class Import";
+            importFileDialog.InitialDirectory = FileHandler.getSharingFolder();
+            importFileDialog.Multiselect = true;
+            importFileDialog.DefaultExt = FileHandler.CLASS_FILE_EXTENSION;
+            importFileDialog.Filter = "Sorting Hat Class (*" + FileHandler.CLASS_FILE_EXTENSION + ")|*" + FileHandler.CLASS_FILE_EXTENSION;
+            if (importFileDialog.ShowDialog() != DialogResult.OK) { return; }
+            FileHandler.setSharingFolder(importFileDialog.FileName);
+
+            List<string> importedFiles = importFileDialog.FileNames.ToList();
+            foreach (string fileName in importFileDialog.FileNames)
             {
-                FileHandler.exportToWord(saveFileDialog.FileName, Model.currentClass.getGrouping(Model.currentClass.CurrentGroupingName), Model.currentClass.Name);
+                if (!FileHandler.importClassFile(fileName))
+                {
+                    if (MessageBox.Show("The class '" + FileHandler.getClassName(fileName) + "' already exists. Do you want to overwrite it?", "Overwrite Permission", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    {
+                        FileHandler.importClassFile(fileName, true);
+                    }
+                    else
+                    {
+                        importedFiles.Remove(fileName);
+                    }
+                }
+            }
+            loadClassNames();
+            Model.reloadCurrentClass();
+            if (importedFiles.Count > 0)
+            {
+                string importedItems = "";
+                foreach (string item in importedFiles)
+                {
+                    importedItems = Environment.NewLine + " - " + FileHandler.getClassName(item);
+                }
+                MessageBox.Show("The following classes were imported:" + importedItems, "Import successful", MessageBoxButtons.OK);
+            }
+        }
+
+        private void exportClass(object sender, EventArgs e)
+        {
+            Model.saveCurrentClass();
+            ChecklistForm checklist = new ChecklistForm(FileHandler.getSavedClassNames(), "Checkmark the classes you want exported.");
+            if (checklist.ShowDialog() != DialogResult.OK) { return; }
+            if (checklist.checkedItems.Count <= 0) { return; }
+
+            FolderBrowserDialog exportFolderDialog = new FolderBrowserDialog();
+            exportFolderDialog.SelectedPath = FileHandler.getSharingFolder();
+            if (exportFolderDialog.ShowDialog() != DialogResult.OK) { return; }
+            FileHandler.setSharingFolder(exportFolderDialog.SelectedPath);
+
+            List<string> exportedClasses = checklist.checkedItems;
+            foreach (string className in checklist.checkedItems)
+            {
+                if (!FileHandler.exportClassFile(className, exportFolderDialog.SelectedPath))
+                {
+                    if (MessageBox.Show("A copy of '" + className + "' already exists there. Do you want to overwrite it?", "Overwrite Permission", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    {
+                        FileHandler.exportClassFile(className, exportFolderDialog.SelectedPath, true);
+                    }
+                    else
+                    {
+                        exportedClasses.Remove(className);
+                    }
+                }
+            }
+            if (exportedClasses.Count > 0)
+            {
+                string exportedItems = "";
+                foreach (string item in exportedClasses)
+                {
+                    exportedItems = Environment.NewLine + " - " + item + FileHandler.CLASS_FILE_EXTENSION;
+                }
+                MessageBox.Show("The following files can be found at '" + exportFolderDialog.SelectedPath + "':" + exportedItems, "Export successful", MessageBoxButtons.OK);
             }
         }
 

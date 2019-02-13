@@ -26,6 +26,9 @@
     <Setting Name="ColourTheme" Type="System.Drawing.Color" Scope="User">
       <Value Profile="(Default)">Control</Value>
     </Setting>
+    <Setting Name="SharingFolder" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Default</Value>
+    </Setting>
     <Setting Name="ConstraintsEditFormSize" Type="System.Drawing.Size" Scope="User">
       <Value Profile="(Default)">0, 0</Value>
     </Setting>

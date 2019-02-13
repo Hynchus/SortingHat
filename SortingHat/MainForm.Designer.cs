@@ -34,6 +34,10 @@
             this.classToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.NewClassbtn = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.classToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.classToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.CloseFormbtn = new System.Windows.Forms.ToolStripMenuItem();
             this.groupingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.NewGroupingbtn = new System.Windows.Forms.ToolStripMenuItem();
@@ -73,6 +77,8 @@
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.classToolStripMenuItem,
+            this.importToolStripMenuItem,
+            this.exportToolStripMenuItem1,
             this.CloseFormbtn});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(50, 29);
@@ -84,25 +90,57 @@
             this.NewClassbtn,
             this.toolStripSeparator1});
             this.classToolStripMenuItem.Name = "classToolStripMenuItem";
-            this.classToolStripMenuItem.Size = new System.Drawing.Size(139, 30);
+            this.classToolStripMenuItem.Size = new System.Drawing.Size(252, 30);
             this.classToolStripMenuItem.Text = "Class";
             // 
             // NewClassbtn
             // 
             this.NewClassbtn.Name = "NewClassbtn";
-            this.NewClassbtn.Size = new System.Drawing.Size(176, 30);
+            this.NewClassbtn.Size = new System.Drawing.Size(252, 30);
+            this.NewClassbtn.Tag = "Structural";
             this.NewClassbtn.Text = "New Class";
             this.NewClassbtn.Click += new System.EventHandler(this.NewClassbtn_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(173, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(249, 6);
+            this.toolStripSeparator1.Tag = "Structural";
+            // 
+            // importToolStripMenuItem
+            // 
+            this.importToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.classToolStripMenuItem2});
+            this.importToolStripMenuItem.Name = "importToolStripMenuItem";
+            this.importToolStripMenuItem.Size = new System.Drawing.Size(252, 30);
+            this.importToolStripMenuItem.Text = "Import";
+            // 
+            // classToolStripMenuItem2
+            // 
+            this.classToolStripMenuItem2.Name = "classToolStripMenuItem2";
+            this.classToolStripMenuItem2.Size = new System.Drawing.Size(252, 30);
+            this.classToolStripMenuItem2.Text = "Class";
+            this.classToolStripMenuItem2.Click += new System.EventHandler(this.importClass);
+            // 
+            // exportToolStripMenuItem1
+            // 
+            this.exportToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.classToolStripMenuItem1});
+            this.exportToolStripMenuItem1.Name = "exportToolStripMenuItem1";
+            this.exportToolStripMenuItem1.Size = new System.Drawing.Size(252, 30);
+            this.exportToolStripMenuItem1.Text = "Export";
+            // 
+            // classToolStripMenuItem1
+            // 
+            this.classToolStripMenuItem1.Name = "classToolStripMenuItem1";
+            this.classToolStripMenuItem1.Size = new System.Drawing.Size(252, 30);
+            this.classToolStripMenuItem1.Text = "Class";
+            this.classToolStripMenuItem1.Click += new System.EventHandler(this.exportClass);
             // 
             // CloseFormbtn
             // 
             this.CloseFormbtn.Name = "CloseFormbtn";
-            this.CloseFormbtn.Size = new System.Drawing.Size(139, 30);
+            this.CloseFormbtn.Size = new System.Drawing.Size(252, 30);
             this.CloseFormbtn.Text = "Close";
             this.CloseFormbtn.Click += new System.EventHandler(this.quitToolStripMenuItem_Click);
             // 
@@ -120,14 +158,14 @@
             // NewGroupingbtn
             // 
             this.NewGroupingbtn.Name = "NewGroupingbtn";
-            this.NewGroupingbtn.Size = new System.Drawing.Size(131, 30);
+            this.NewGroupingbtn.Size = new System.Drawing.Size(252, 30);
             this.NewGroupingbtn.Text = "New";
             this.NewGroupingbtn.Click += new System.EventHandler(this.NewGroupingbtn_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(128, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(249, 6);
             // 
             // ClassNameDisplay
             // 
@@ -202,8 +240,8 @@
             // WordExportbtn
             // 
             this.WordExportbtn.Name = "WordExportbtn";
-            this.WordExportbtn.Size = new System.Drawing.Size(252, 30);
-            this.WordExportbtn.Text = "Word Document";
+            this.WordExportbtn.Size = new System.Drawing.Size(285, 30);
+            this.WordExportbtn.Text = "Word Document (.docx)";
             this.WordExportbtn.Click += new System.EventHandler(this.WordExportbtn_Click);
             // 
             // deleteToolStripMenuItem
@@ -286,6 +324,10 @@
         private System.Windows.Forms.ToolStripMenuItem exportToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem WordExportbtn;
         private System.Windows.Forms.ToolStripMenuItem constraintsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem importToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem classToolStripMenuItem2;
+        private System.Windows.Forms.ToolStripMenuItem exportToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem classToolStripMenuItem1;
     }
 }
 
