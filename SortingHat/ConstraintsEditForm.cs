@@ -19,15 +19,23 @@ namespace SortingHat
 
         private void loadSettings()
         {
-            this.Location = Properties.Settings.Default.ConstraintsEditFormLocation;
-            this.Size = Properties.Settings.Default.ConstraintsEditFormSize;
+            if (Properties.Settings.Default.ConstraintsEditFormSize != new Size(-1, -1))
+            {
+                this.Location = Properties.Settings.Default.ConstraintsEditFormLocation;
+                this.Size = Properties.Settings.Default.ConstraintsEditFormSize;
+            }
             this.BackColor = Properties.Settings.Default.ColourTheme;
+            this.WindowState = (FormWindowState)Properties.Settings.Default.ConstraintsEditFormWindowState;
         }
 
         private void saveSettings()
         {
-            Properties.Settings.Default.ConstraintsEditFormLocation = this.Location;
-            Properties.Settings.Default.ConstraintsEditFormSize = this.Size;
+            if (this.WindowState == FormWindowState.Normal)
+            {
+                Properties.Settings.Default.ConstraintsEditFormLocation = this.Location;
+                Properties.Settings.Default.ConstraintsEditFormSize = this.Size;
+            }
+            Properties.Settings.Default.ConstraintsEditFormWindowState = (int)this.WindowState;
             Properties.Settings.Default.Save();
         }
 

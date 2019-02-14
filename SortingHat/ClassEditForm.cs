@@ -24,15 +24,23 @@ namespace SortingHat
 
         private void loadSettings()
         {
-            this.Location = Properties.Settings.Default.ClassEditFormLocation;
-            this.Size = Properties.Settings.Default.ClassEditFormSize;
+            if (Properties.Settings.Default.ClassEditFormSize != new Size(-1, -1))
+            {
+                this.Location = Properties.Settings.Default.ClassEditFormLocation;
+                this.Size = Properties.Settings.Default.ClassEditFormSize;
+            }
             this.BackColor = Properties.Settings.Default.ColourTheme;
+            this.WindowState = (FormWindowState)Properties.Settings.Default.ClassEditFormWindowState;
         }
 
         private void saveSettings()
         {
-            Properties.Settings.Default.ClassEditFormLocation = this.Location;
-            Properties.Settings.Default.ClassEditFormSize = this.Size;
+            if (this.WindowState == FormWindowState.Normal)
+            {
+                Properties.Settings.Default.ClassEditFormLocation = this.Location;
+                Properties.Settings.Default.ClassEditFormSize = this.Size;
+            }
+            Properties.Settings.Default.ClassEditFormWindowState = (int)this.WindowState;
             Properties.Settings.Default.Save();
         }
 
@@ -56,11 +64,24 @@ namespace SortingHat
             this.Close();
         }
 
+        private void gatherStudentNames()
+        {
+            this.studentNames = new List<string>();
+            foreach (string studentName in StudentNamestxtbox.Text.Split('\n').ToList<string>())
+            {
+                string cleanName = Utilities.CleanInput(studentName);
+                if (cleanName != "")
+                {
+                    this.studentNames.Add(cleanName);
+                }
+            }
+            this.studentNames.RemoveAll(s => s == "");
+        }
+
         private void Savebtn_Click(object sender, EventArgs e)
         {
-            this.className = ClassNametxtbox.Text;
-            this.studentNames = StudentNamestxtbox.Text.Split('\n').ToList<string>();
-            this.studentNames.RemoveAll(s => s.Trim() == "");
+            this.className = Utilities.CleanInput(ClassNametxtbox.Text);
+            gatherStudentNames();
             this.Close();
         }
 

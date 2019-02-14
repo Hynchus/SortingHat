@@ -15,16 +15,24 @@ namespace SortingHat
     {
         private void loadSettings()
         {
-            this.Location = Properties.Settings.Default.MainFormLocation;
-            this.Size = Properties.Settings.Default.MainFormSize;
+            if (Properties.Settings.Default.MainFormSize != new Size(-1, -1))
+            {
+                this.Location = Properties.Settings.Default.MainFormLocation;
+                this.Size = Properties.Settings.Default.MainFormSize;
+            }
             this.BackColor = Properties.Settings.Default.ColourTheme;
+            this.WindowState = (FormWindowState)Properties.Settings.Default.MainFormWindowState;
             Model.setCurrentClass(Properties.Settings.Default.CurrentClass);
         }
 
         private void saveSettings()
         {
-            Properties.Settings.Default.MainFormLocation = this.Location;
-            Properties.Settings.Default.MainFormSize = this.Size;
+            if (this.WindowState == FormWindowState.Normal)
+            {
+                Properties.Settings.Default.MainFormLocation = this.Location;
+                Properties.Settings.Default.MainFormSize = this.Size;
+            }
+            Properties.Settings.Default.MainFormWindowState = (int)this.WindowState;
             if (Model.currentClass != null)
             {
                 Properties.Settings.Default.CurrentClass = Model.currentClass.Name;
@@ -331,6 +339,7 @@ namespace SortingHat
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.InitialDirectory = FileHandler.getSharingFolder();
+            saveFileDialog.FileName = Model.currentClass.CurrentGroupingName + " Groups";
             saveFileDialog.DefaultExt = ".docx";
             saveFileDialog.Filter = "Word Document (*.docx)|*.docx";
             if (saveFileDialog.ShowDialog() != DialogResult.OK) { return; }
