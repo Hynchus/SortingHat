@@ -43,22 +43,7 @@ namespace SortingHat
             }
             Properties.Settings.Default.Save();
         }
-
-        private void showClassTooltip()
-        {
-            classesToolStripMenuItem.ToolTipText = "Setup your class here!";
-            HelperToolTip.Active = true;
-        }
-
-        private void showGroupingsTooltip()
-        {
-        }
-
-        private void hideTooltip()
-        {
-
-        }
-
+        
         private void loadClassNames()
         {
             clearClassButtons();
@@ -66,7 +51,6 @@ namespace SortingHat
             {
                 addClassButton(className);
             }
-            showClassTooltip();
         }
 
         public MainForm()
