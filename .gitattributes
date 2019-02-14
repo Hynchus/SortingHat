@@ -61,12 +61,3 @@
 #*.PDF   diff=astextplain
 #*.rtf   diff=astextplain
 #*.RTF   diff=astextplain
-
-###############################################################################
-# behavior for published executables
-#
-# keep relevant files binary
-###############################################################################
-*.manifest 	binary
-*.application	binary
-*.deploy 	binary

@@ -13,7 +13,7 @@ namespace SortingHat
     {
         public const string DATA_FILE_EXTENSION = ".shd";
         public const string CLASS_FILE_EXTENSION = ".shc";
-        private static string DATA_SAVE_FOLDER = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "SortingHat");
+        private static readonly string DATA_SAVE_FOLDER = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "SortingHat");
 
         private static System.Runtime.Serialization.Formatters.Binary.BinaryFormatter binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
 
@@ -156,18 +156,26 @@ namespace SortingHat
         public static void exportGroupingToWord(string filepath, Grouping grouping, string classname)
         {
             DocX document = DocX.Create(filepath);
-            Formatting groupingNameFormat = new Formatting();
-            groupingNameFormat.FontFamily = new Xceed.Words.NET.Font("Tahoma");
-            groupingNameFormat.Size = 20;
-            Formatting classNameFormat = new Formatting();
-            classNameFormat.FontFamily = new Xceed.Words.NET.Font("Tahoma");
-            classNameFormat.Size = 10;
-            Formatting groupNameFormat = new Formatting();
-            groupNameFormat.FontFamily = new Xceed.Words.NET.Font("Verdana");
-            groupNameFormat.Size = 14;
-            Formatting groupListFormat = new Formatting();
-            groupListFormat.FontFamily = new Xceed.Words.NET.Font("Trebuchet MS");
-            groupListFormat.Size = 12;
+            Formatting groupingNameFormat = new Formatting
+            {
+                FontFamily = new Xceed.Words.NET.Font("Tahoma"),
+                Size = 20
+            };
+            Formatting classNameFormat = new Formatting
+            {
+                FontFamily = new Xceed.Words.NET.Font("Tahoma"),
+                Size = 10
+            };
+            Formatting groupNameFormat = new Formatting
+            {
+                FontFamily = new Xceed.Words.NET.Font("Verdana"),
+                Size = 14
+            };
+            Formatting groupListFormat = new Formatting
+            {
+                FontFamily = new Xceed.Words.NET.Font("Trebuchet MS"),
+                Size = 12
+            };
             document.InsertParagraph(grouping.Name + Environment.NewLine, false, groupingNameFormat).Alignment = Alignment.center;
             document.InsertParagraph(classname + Environment.NewLine, false, classNameFormat).Alignment = Alignment.right;
             foreach (Group group in grouping.Groups)
