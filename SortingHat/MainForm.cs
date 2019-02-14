@@ -44,6 +44,21 @@ namespace SortingHat
             Properties.Settings.Default.Save();
         }
 
+        private void showClassTooltip()
+        {
+            classesToolStripMenuItem.ToolTipText = "Setup your class here!";
+            HelperToolTip.Active = true;
+        }
+
+        private void showGroupingsTooltip()
+        {
+        }
+
+        private void hideTooltip()
+        {
+
+        }
+
         private void loadClassNames()
         {
             clearClassButtons();
@@ -51,6 +66,7 @@ namespace SortingHat
             {
                 addClassButton(className);
             }
+            showClassTooltip();
         }
 
         public MainForm()
@@ -84,7 +100,7 @@ namespace SortingHat
             ClassNameDisplay.Enabled = false;
             ClassNameDisplay.Text = "";
             unloadGroupings();
-            foreach (ToolStripItem button in classToolStripMenuItem.DropDownItems)
+            foreach (ToolStripItem button in classesToolStripMenuItem.DropDownItems)
             {
                 if (button.GetType() == typeof(ToolStripSeparator)) { continue; }
                 ((ToolStripMenuItem)button).Checked = false;
@@ -167,7 +183,7 @@ namespace SortingHat
             ClassNameDisplay.Text = currentClassName;
             ClassNameDisplay.Enabled = true;
             ClassNameDisplay.Visible = true;
-            foreach (ToolStripItem button in classToolStripMenuItem.DropDownItems)
+            foreach (ToolStripItem button in classesToolStripMenuItem.DropDownItems)
             {
                 if (button.GetType() == typeof(ToolStripSeparator))
                 {
@@ -193,17 +209,17 @@ namespace SortingHat
         private void clearClassButtons()
         {
             List<ToolStripItem> structuralItems = new List<ToolStripItem>();
-            foreach (ToolStripItem item in classToolStripMenuItem.DropDownItems)
+            foreach (ToolStripItem item in classesToolStripMenuItem.DropDownItems)
             {
                 if ((string)item.Tag == "Structural")
                 {
                     structuralItems.Add(item);
                 }
             }
-            classToolStripMenuItem.DropDownItems.Clear();
+            classesToolStripMenuItem.DropDownItems.Clear();
             foreach (ToolStripItem item in structuralItems)
             {
-                classToolStripMenuItem.DropDownItems.Add(item);
+                classesToolStripMenuItem.DropDownItems.Add(item);
             }
         }
 
@@ -211,7 +227,7 @@ namespace SortingHat
         {
             ToolStripMenuItem button = new ToolStripMenuItem(className);
             button.Click += classButtonClicked;
-            classToolStripMenuItem.DropDownItems.Add(button);
+            classesToolStripMenuItem.DropDownItems.Add(button);
         }
 
         private void NewClassbtn_Click(object sender, EventArgs e)
@@ -239,7 +255,7 @@ namespace SortingHat
             classForm.ShowDialog();
             if (classForm.DialogResult == DialogResult.OK)
             {
-                foreach (ToolStripItem button in classToolStripMenuItem.DropDownItems)
+                foreach (ToolStripItem button in classesToolStripMenuItem.DropDownItems)
                 {
                     if (button.Text == originalClassName)
                     {
@@ -256,7 +272,7 @@ namespace SortingHat
             if (MessageBox.Show("Are you sure you want to delete '" + Model.currentClass.Name + "'?", "Delete", MessageBoxButtons.OKCancel) == DialogResult.OK)
             {
                 ToolStripItem classButton = null;
-                foreach (ToolStripItem item in classToolStripMenuItem.DropDownItems)
+                foreach (ToolStripItem item in classesToolStripMenuItem.DropDownItems)
                 {
                     if (item.Text == Model.currentClass.Name)
                     {
@@ -264,7 +280,7 @@ namespace SortingHat
                         break;
                     }
                 }
-                classToolStripMenuItem.DropDownItems.Remove(classButton);
+                classesToolStripMenuItem.DropDownItems.Remove(classButton);
                 Model.deleteCurrentClass();
             }
         }
