@@ -35,14 +35,13 @@
             // 
             // GroupingLayoutPanel
             // 
-            this.GroupingLayoutPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.GroupingLayoutPanel.AutoScroll = true;
             this.GroupingLayoutPanel.AutoScrollMargin = new System.Drawing.Size(14, 0);
-            this.GroupingLayoutPanel.AutoSize = true;
             this.GroupingLayoutPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.GroupingLayoutPanel.Location = new System.Drawing.Point(251, 3);
+            this.GroupingLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.GroupingLayoutPanel.Location = new System.Drawing.Point(3, 3);
             this.GroupingLayoutPanel.Name = "GroupingLayoutPanel";
-            this.GroupingLayoutPanel.Size = new System.Drawing.Size(0, 272);
+            this.GroupingLayoutPanel.Size = new System.Drawing.Size(496, 272);
             this.GroupingLayoutPanel.TabIndex = 0;
             // 
             // tableLayoutPanel1
@@ -69,7 +68,6 @@
             this.Size = new System.Drawing.Size(502, 278);
             this.Load += new System.EventHandler(this.GroupingDisplay_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
-            this.tableLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
 
         }

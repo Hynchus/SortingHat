@@ -69,7 +69,7 @@
             this.GroupingDisplaybtn});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(704, 33);
+            this.menuStrip1.Size = new System.Drawing.Size(604, 33);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -274,21 +274,21 @@
             this.GroupingDisplayPanel.Location = new System.Drawing.Point(0, 33);
             this.GroupingDisplayPanel.Name = "GroupingDisplayPanel";
             this.GroupingDisplayPanel.Padding = new System.Windows.Forms.Padding(0, 0, 0, 10);
-            this.GroupingDisplayPanel.Size = new System.Drawing.Size(704, 242);
+            this.GroupingDisplayPanel.Size = new System.Drawing.Size(604, 424);
             this.GroupingDisplayPanel.TabIndex = 1;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(704, 275);
+            this.ClientSize = new System.Drawing.Size(604, 457);
             this.Controls.Add(this.Focuspnl);
             this.Controls.Add(this.GroupingDisplayPanel);
             this.Controls.Add(this.menuStrip1);
             this.DoubleBuffered = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
-            this.MinimumSize = new System.Drawing.Size(500, 275);
+            this.MinimumSize = new System.Drawing.Size(626, 513);
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "The Sorting Hat";

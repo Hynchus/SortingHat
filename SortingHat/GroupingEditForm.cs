@@ -20,15 +20,23 @@ namespace SortingHat
 
         private void loadSettings()
         {
-            this.Location = Properties.Settings.Default.GroupingEditFormLocation;
-            this.Size = Properties.Settings.Default.GroupingEditFormSize;
+            if (Properties.Settings.Default.GroupingEditFormSize != new Size(-1, -1))
+            {
+                this.Location = Properties.Settings.Default.GroupingEditFormLocation;
+                this.Size = Properties.Settings.Default.GroupingEditFormSize;
+            }
             this.BackColor = Properties.Settings.Default.ColourTheme;
+            this.WindowState = (FormWindowState)Properties.Settings.Default.GroupingEditFormWindowState;
         }
 
         private void saveSettings()
         {
-            Properties.Settings.Default.GroupingEditFormLocation = this.Location;
-            Properties.Settings.Default.GroupingEditFormSize = this.Size;
+            if (this.WindowState == FormWindowState.Normal)
+            {
+                Properties.Settings.Default.GroupingEditFormLocation = this.Location;
+                Properties.Settings.Default.GroupingEditFormSize = this.Size;
+            }
+            Properties.Settings.Default.GroupingEditFormWindowState = (int)this.WindowState;
             Properties.Settings.Default.Save();
         }
 
@@ -78,7 +86,7 @@ namespace SortingHat
 
         private void Savebtn_Click(object sender, EventArgs e)
         {
-            this.groupingName = GroupingNametxtbox.Text;
+            this.groupingName = Utilities.CleanInput(GroupingNametxtbox.Text);
             this.groupCount = GroupCountTrackbar.Value;
             this.Close();
         }

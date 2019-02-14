@@ -55,7 +55,7 @@ namespace SortingHat
 
         private void GroupNameTextbox_TextChanged(object sender, EventArgs e)
         {
-            group.Name = GroupNameTextbox.Text;
+            group.Name = Utilities.CleanInput(GroupNameTextbox.Text);
         }
 
         private void GroupNameTextbox_MouseEnter(object sender, EventArgs e)

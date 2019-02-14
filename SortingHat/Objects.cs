@@ -140,15 +140,15 @@ namespace SortingHat
         public void updateConstraints(List<Constraint> constraints)
         {
             this.constraints = constraints;
-            foreach (Student student in this.students)
-            {
-                student.ConstraintGroups = new List<int>();
-            }
             int constraintGroupNumber = 0;
             foreach (Constraint constraint in this.constraints)
             {
                 foreach (Student student in constraint.Students)
                 {
+                    if (student.ConstraintGroups == null)
+                    {
+                        student.ConstraintGroups = new List<int>();
+                    }
                     student.ConstraintGroups.Add(constraintGroupNumber);
                 }
                 constraintGroupNumber++;
@@ -288,11 +288,15 @@ namespace SortingHat
                     bool constraintFree = true;
                     foreach (Student student in group.Students)
                     {
-                        if (student.ConstraintGroups.Intersect(constraintGroupsToAvoid).Any())
+                        try
                         {
-                            constraintFree = false;
-                            break;
+                            if (student.ConstraintGroups.Intersect(constraintGroupsToAvoid).Any())
+                            {
+                                constraintFree = false;
+                                break;
+                            }
                         }
+                        catch { /* Student doesn't have Constraint Groups, ignore */ }
                     }
                     if (constraintFree)
                     {
@@ -313,8 +317,9 @@ namespace SortingHat
             foreach (Group prospectiveGroup in this.groups)
             {
                 if (prospectiveGroup == group) { continue; }
-                foreach (Student prospectiveStudent in prospectiveGroup.Students.ToList())  // Create separate copy of student list to avoid modification errors.
+                foreach (Student prospectiveStudent in prospectiveGroup.Students.ToList())  // Create separate copy of student list to avoid iterator modified errors.
                 {
+                    if (prospectiveStudent.ConstraintGroups == null) { prospectiveStudent.ConstraintGroups = new List<int>(); }
                     if (prospectiveStudent.ConstraintGroups.Intersect(group.ConstraintGroups).Any()) { continue; }
                     prospectiveGroup.removeStudent(prospectiveStudent);
                     if (student.ConstraintGroups.Intersect(prospectiveGroup.ConstraintGroups).Any())
@@ -341,10 +346,14 @@ namespace SortingHat
                 foreach (Student student in group.Students.ToList())  // Create separate copy of student list to avoid modification errors.
                 {
                     List<int> constraintOffences = group.getConstraintOffences();
-                    if (student.ConstraintGroups.Intersect(constraintOffences).Any())
+                    try
                     {
-                        resolveConstraintConflict(student, group);
+                        if (student.ConstraintGroups.Intersect(constraintOffences).Any())
+                        {
+                            resolveConstraintConflict(student, group);
+                        }
                     }
+                    catch { /* Student doesn't have Constraint Groups, ignore */ }
                 }
             }
         }
@@ -418,7 +427,11 @@ namespace SortingHat
                 return false;
             }
             this.students.Add(student);
-            this.ConstraintGroups.AddRange(student.ConstraintGroups);
+            try
+            {
+                this.ConstraintGroups.AddRange(student.ConstraintGroups);
+            }
+            catch { /* No Constraint Groups, ignore */ }
             return true;
         }
 
@@ -432,10 +445,14 @@ namespace SortingHat
 
         public bool removeStudent(Student student)
         {
-            foreach (int constraintGroup in student.ConstraintGroups)
+            try
             {
-                this.constraintGroups.Remove(constraintGroup);
+                foreach (int constraintGroup in student.ConstraintGroups)
+                {
+                    this.constraintGroups.Remove(constraintGroup);
+                }
             }
+            catch { /* No Constraint Groups, ignore */ }
             return this.students.Remove(student);
         }
 
@@ -460,23 +477,37 @@ namespace SortingHat
         public void clearStudents()
         {
             this.students.Clear();
-            if (this.constraintGroups == null) { this.constraintGroups = new List<int>(); }  // Prevents exceptions caused by old file transition
-            this.constraintGroups.Clear();
+            try
+            {
+                this.constraintGroups.Clear();
+            }
+            catch { /* No Constraint Groups, ignore */ }
         }
 
         public void refreshConstraintGroups()
         {
-            this.constraintGroups.Clear();
+            this.constraintGroups = new List<int>();
             foreach (Student student in this.students)
             {
-                this.constraintGroups.AddRange(student.ConstraintGroups);
+                try
+                {
+                    this.constraintGroups.AddRange(student.ConstraintGroups);
+                }
+                catch { /* Student doesn't have Constraint Groups, ignore */ }
             }
         }
 
         public List<int> getConstraintOffences()
         {
             List<int> constraintOffences = new List<int>();
-            this.constraintGroups.Sort();
+            try
+            {
+                this.constraintGroups.Sort();
+            }
+            catch
+            {
+                this.constraintGroups = new List<int>();
+            }
             for (int i = 0; i < this.constraintGroups.Count-1; i++)  // Don't need to check the last one
             {
                 if (this.constraintGroups[i] == this.constraintGroups[i+1])

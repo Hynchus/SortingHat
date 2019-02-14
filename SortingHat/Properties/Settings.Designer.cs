@@ -133,7 +133,7 @@ namespace SortingHat.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0, 0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("-1, -1")]
         public global::System.Drawing.Size ConstraintsEditFormSize {
             get {
                 return ((global::System.Drawing.Size)(this["ConstraintsEditFormSize"]));
@@ -145,7 +145,7 @@ namespace SortingHat.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0, 0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("-1, -1")]
         public global::System.Drawing.Point ConstraintsEditFormLocation {
             get {
                 return ((global::System.Drawing.Point)(this["ConstraintsEditFormLocation"]));
@@ -164,6 +164,54 @@ namespace SortingHat.Properties {
             }
             set {
                 this["UpgradeSettings"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int MainFormWindowState {
+            get {
+                return ((int)(this["MainFormWindowState"]));
+            }
+            set {
+                this["MainFormWindowState"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int ClassEditFormWindowState {
+            get {
+                return ((int)(this["ClassEditFormWindowState"]));
+            }
+            set {
+                this["ClassEditFormWindowState"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int GroupingEditFormWindowState {
+            get {
+                return ((int)(this["GroupingEditFormWindowState"]));
+            }
+            set {
+                this["GroupingEditFormWindowState"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int ConstraintsEditFormWindowState {
+            get {
+                return ((int)(this["ConstraintsEditFormWindowState"]));
+            }
+            set {
+                this["ConstraintsEditFormWindowState"] = value;
             }
         }
     }
