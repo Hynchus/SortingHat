@@ -1,0 +1,15 @@
+Classroom Grid x by y  	: List<List<Spot>>
+Grid of spots		: Spot: bool seat, Student occupant
+
+
+Required
+ - Sliders for grid size
+ - Drag and Drop
+ - Unseated Students list
+
+
+
+Bonus
+ - Constraints consideration
+ - Export as image
+

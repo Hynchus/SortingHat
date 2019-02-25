@@ -214,5 +214,41 @@ namespace SortingHat.Properties {
                 this["ConstraintsEditFormWindowState"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("-1, -1")]
+        public global::System.Drawing.Size SeatingPlanFormSize {
+            get {
+                return ((global::System.Drawing.Size)(this["SeatingPlanFormSize"]));
+            }
+            set {
+                this["SeatingPlanFormSize"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("-1, -1")]
+        public global::System.Drawing.Point SeatingPlanFormLocation {
+            get {
+                return ((global::System.Drawing.Point)(this["SeatingPlanFormLocation"]));
+            }
+            set {
+                this["SeatingPlanFormLocation"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int SeatingPlanFormState {
+            get {
+                return ((int)(this["SeatingPlanFormState"]));
+            }
+            set {
+                this["SeatingPlanFormState"] = value;
+            }
+        }
     }
 }

@@ -15,11 +15,17 @@ namespace SortingHat
         private List<Constraint> constraints;
         private List<Grouping> groupings;
         private string currentGroupingName = "";
+        private Tuple<List<ClassroomSpot>, Size> seatingPlan = null;
 
         public string Name { get => name; }
         public List<Student> Students { get => students; }
         public List<Constraint> Constraints { get => constraints; }
         public List<Grouping> Groupings { get => groupings; }
+        public Tuple<List<ClassroomSpot>, Size> SeatingPlan 
+        {
+            get => seatingPlan;
+            set => seatingPlan = value;
+        }
         public string CurrentGroupingName 
         {
             get => currentGroupingName;
@@ -551,6 +557,22 @@ namespace SortingHat
         {
             this.Name = name;
         }
+    }
 
+    [Serializable]
+    public class ClassroomSpot
+    {
+        private bool seat;
+        private Student occupant;
+
+        public bool Seat { get => seat; set => seat = value; }
+        public Student Occupant { get => occupant; set => occupant = value; }
+
+        public ClassroomSpot(bool seat = false, Student occupant = null)
+        {
+            Seat = seat;
+            Occupant = occupant;
+        }
+        
     }
 }

@@ -19,8 +19,16 @@ namespace SortingHat
         private List<Student> students;
         private List<Tuple<Student, Change>> changes = new List<Tuple<Student, Change>>();
 
+        //
+        // Summary:
+        //      Gets or sets how items are dragged from this control.
+        //
         public DragDropEffects DragMethod { get => dragType; set => dragType = value; }
         public List<Student> Students { get => students; }
+        //
+        // Summary:
+        //      Gets or sets whether thic control will add the item to its list on drop.
+        //
         public bool ReceiveDrop { get => receiveDrop; set => receiveDrop = value; }
 
         public StudentList()
