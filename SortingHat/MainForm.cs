@@ -440,5 +440,16 @@ namespace SortingHat
                 Model.saveCurrentClass();
             }
         }
+
+        private void seatingPlaneToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SeatingPlanForm seatingPlanForm = new SeatingPlanForm(Model.currentClass.Students, Model.currentClass.SeatingPlan);
+            seatingPlanForm.ShowDialog();
+            if (seatingPlanForm.DialogResult == DialogResult.OK)
+            {
+                Model.currentClass.SeatingPlan = seatingPlanForm.GetSeatingPlan();
+                Model.saveCurrentClass();
+            }
+        }
     }
 }

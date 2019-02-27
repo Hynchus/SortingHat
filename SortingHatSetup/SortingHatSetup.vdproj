@@ -80,6 +80,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.6.1"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.6.1 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.6.1"
+                    }
+                }
             }
         }
         "Release"
@@ -280,15 +288,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Sorting Hat"
-        "ProductCode" = "8:{8EE0E27E-F85C-4FFF-95C6-EBE46CA610A0}"
-        "PackageCode" = "8:{2DF4C64E-1099-4741-B57C-55FEAD6DED1B}"
+        "ProductCode" = "8:{27672DF8-AF0F-4D37-BE62-F648BDDDB405}"
+        "PackageCode" = "8:{3828F008-EE49-4F63-B58A-028EB5961B60}"
         "UpgradeCode" = "8:{CA702A57-A9E7-421D-9D65-51CEE53FBBBC}"
         "AspNetVersion" = "8:"
         "RestartWWWService" = "11:FALSE"
-        "RemovePreviousVersions" = "11:FALSE"
+        "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.2.1"
+        "ProductVersion" = "8:1.3.0"
         "Manufacturer" = "8:Hynchus"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"

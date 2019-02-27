@@ -19,9 +19,21 @@ namespace SortingHat
         private List<Student> students;
         private List<Tuple<Student, Change>> changes = new List<Tuple<Student, Change>>();
 
+        //
+        // Summary:
+        //      Gets or sets how items are dragged from this control.
+        //
         public DragDropEffects DragMethod { get => dragType; set => dragType = value; }
         public List<Student> Students { get => students; }
+        //
+        // Summary:
+        //      Gets or sets whether thic control will add the item to its list on drop.
+        //
         public bool ReceiveDrop { get => receiveDrop; set => receiveDrop = value; }
+
+        public delegate void StudentListChange();
+        private event StudentListChange StudentListChanged; 
+
 
         public StudentList()
         {
@@ -29,6 +41,21 @@ namespace SortingHat
             ListBox.DisplayMember = "Name";
             ListBox.ValueMember = "Name";
             updateStudentList();
+        }
+
+        public void subscribeToStudentListChangeEvent(StudentListChange handler)
+        {
+            StudentListChanged += handler;
+        }
+
+        public void unsubscribeFromStudentListChangeEvent(StudentListChange handler)
+        {
+            StudentListChanged -= handler;
+        }
+
+        private void invokeStudentListChangeEvent()
+        {
+            StudentListChanged?.Invoke();
         }
 
         private void refreshStudentList()
@@ -39,6 +66,7 @@ namespace SortingHat
             {
                 ListBox.Items.Add(student);
             }
+            invokeStudentListChangeEvent();
         }
 
         private void clearChanges()
@@ -54,7 +82,7 @@ namespace SortingHat
             }
             else
             {
-                this.students = students;
+                this.students = students.ToList();
             }
             refreshStudentList();
         }
@@ -88,6 +116,16 @@ namespace SortingHat
                 recordChange(student, Change.Added);
             }
             refreshStudentList();
+        }
+
+        public Student popStudent(int index = 0)
+        {
+            if (index < 0 || index >= this.students.Count) {
+                throw new IndexOutOfRangeException("Invalid index passed to function 'popStudent(int index)'");
+            }
+            Student student = this.students[index];
+            removeStudentList(new List<Student>() { student });
+            return student;
         }
 
         public void removeStudentList(List<Student> students)
