@@ -13,69 +13,95 @@ namespace SortingHat
     public partial class ClassroomSpotControl : UserControl
     {
         private bool seat = false;
-        private Student occupant = null;
+        private Point spotLocation;
 
-        private bool Seat 
+        public bool Seat 
         {
             get { return this.seat; }
             set 
             {
+                if (this.seat == value) { return; }
                 this.seat = value;
-                if (this.seat)
-                {
-                    showSeat();
-                }
-                else
-                {
-                    hideSeat();
-                }
+                toggleShowSeat(this.seat);
+                invokeDeskStateChanged();
             }
         }
 
-        private void showSeat()
+        public Point SpotLocation { get => spotLocation; set => spotLocation = value; }
+        public Student Occupant { get => Occupantlbl.Occupant; set => Occupantlbl.Occupant = value; }
+
+        public delegate void DeskChange(ClassroomSpotControl desk, bool seat, bool occupied);
+        private event DeskChange DeskStateChanged;
+
+        public void invokeDeskStateChanged()
         {
-            this.BackgroundImage = BackgroundImages.Images[1];
-            OccupantNamelbl.Visible = true;
+            DeskStateChanged?.Invoke(this, Seat, Occupant != null);
         }
 
-        private void hideSeat()
+        public void subscribeToDeskChange(DeskChange handler)
         {
-            this.BackgroundImage = BackgroundImages.Images[0];
-            OccupantNamelbl.Visible = false;
+            DeskStateChanged += handler;
         }
 
-        public ClassroomSpotControl(ClassroomSpot classroomSpot = null)
+        public void unsubscribeFromDeskChange(DeskChange handler)
         {
-            InitializeComponent();
-            if (classroomSpot != null)
+            DeskStateChanged -= handler;
+        }
+
+        private void toggleShowSeat(bool showSeat)
+        {
+            this.AllowDrop = showSeat;
+            if (showSeat)
             {
-                UpdateSpot(classroomSpot.Seat, classroomSpot.Occupant);
+                this.BackgroundImage = BackgroundImages.Images[1];
+            }
+            else
+            {
+                this.BackgroundImage = BackgroundImages.Images[0];
             }
         }
 
-        public void UpdateSpot(bool seat = false, Student occupant = null)
+        public void UpdateSpot(Point location, Student occupant = null, bool overrideShowTable = false)
         {
-            this.seat = seat;
-            this.occupant = occupant;
-            if (occupant != null)
+            SpotLocation = location;
+            Occupant = occupant;
+            if (overrideShowTable || Occupant != null)
             {
                 Seat = true;
             }
             else
             {
-                Seat = seat;
+                Seat = false;
             }
+        }
+
+        public ClassroomSpotControl()
+        {
+            InitializeComponent();
+            Occupantlbl.setOccupantChangedInvoker(invokeDeskStateChanged);
         }
 
         private void ClassroomSpotControl_Click(object sender, EventArgs e)
         {
-            if (this.occupant != null) { return; }
+            if (Occupant != null) { return; }
             Seat = !Seat;
         }
 
         public ClassroomSpot GetClassroomSpot()
         {
-            return new ClassroomSpot(Seat, this.occupant);
+            return new ClassroomSpot(SpotLocation, Occupant);
+        }
+
+        private void OnDragEnter(object sender, DragEventArgs e)
+        {
+            if (!Seat) { return; }
+            Occupantlbl.OnDragEnter(sender, e);
+        }
+
+        private void OnDragDrop(object sender, DragEventArgs e)
+        {
+            if (!Seat) { return; }
+            Occupantlbl.OnDragDrop(sender, e);
         }
     }
 }

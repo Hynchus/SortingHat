@@ -445,6 +445,11 @@ namespace SortingHat
         {
             SeatingPlanForm seatingPlanForm = new SeatingPlanForm(Model.currentClass.Students, Model.currentClass.SeatingPlan);
             seatingPlanForm.ShowDialog();
+            if (seatingPlanForm.DialogResult == DialogResult.OK)
+            {
+                Model.currentClass.SeatingPlan = seatingPlanForm.GetSeatingPlan();
+                Model.saveCurrentClass();
+            }
         }
     }
 }

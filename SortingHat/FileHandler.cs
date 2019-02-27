@@ -28,6 +28,13 @@ namespace SortingHat
             createRequiredDirectories();
         }
 
+        public static bool saveImage(Bitmap image, System.Drawing.Imaging.ImageFormat format, string savePath, bool overwrite = false)
+        {
+            if (!overwrite && File.Exists(savePath)) { return false; }
+            image.Save(savePath, format);
+            return true;
+        }
+
         public static List<string> getSavedClassNames()
         {
             List<string> classNames = new List<string>();
@@ -132,14 +139,14 @@ namespace SortingHat
             return true;
         }
 
-        public static void setSharingFolder(string folderPath)
+        public static void setSharingFolder(string path)
         {
-            if (!Directory.Exists(folderPath))
+            if (!Directory.Exists(path))
             {
-                folderPath = Path.GetDirectoryName(folderPath);
+                path = Path.GetDirectoryName(path);
             }
-            if (!Directory.Exists(folderPath)) { return; }
-            Properties.Settings.Default.SharingFolder = folderPath;
+            if (!Directory.Exists(path)) { return; }
+            Properties.Settings.Default.SharingFolder = path;
             Properties.Settings.Default.Save();
         }
 

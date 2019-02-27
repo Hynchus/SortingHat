@@ -70,15 +70,7 @@ namespace SortingHat
         public static void createClass(string className, List<string> studentNames)
         {
             Class newClass = new Class(className);
-            List<Student> students = new List<Student>();
-            foreach (string studentName in studentNames)
-            {
-                if (!string.IsNullOrWhiteSpace(studentName))
-                {
-                    students.Add(new Student(studentName));
-                }
-            }
-            newClass.updateStudents(students);
+            newClass.updateStudents(studentNames);
             FileHandler.saveClass(newClass);
         }
 
@@ -111,12 +103,7 @@ namespace SortingHat
         public static void updateCurrentClass(string className, List<string> studentNames)
         {
             currentClass.renameClass(className);
-            List<Student> students = new List<Student>();
-            foreach (string studentName in studentNames)
-            {
-                students.Add(new Student(studentName));
-            }
-            currentClass.updateStudents(students);
+            currentClass.updateStudents(studentNames);
             FileHandler.deleteClass(currentClassOriginalName);
             FileHandler.saveClass(currentClass);
             currentClassOriginalName = currentClass.Name;

@@ -12,6 +12,19 @@ namespace SortingHat
 {
     public partial class SeatingPlanForm : Form
     {
+        private bool ready = false;
+        private Random random = new Random();
+
+        private int classroomRowCount = 0;
+        private int classroomColumnCount = 0;
+
+        private Point maxIndex = Point.Empty;
+
+        private List<ClassroomSpot> loadedSeatingPlan;
+
+        private HashSet<ClassroomSpotControl> unoccupiedDesks = new HashSet<ClassroomSpotControl>();
+        private HashSet<ClassroomSpotControl> occupiedDesks = new HashSet<ClassroomSpotControl>();
+
 
         private void loadSettings()
         {
@@ -35,112 +48,251 @@ namespace SortingHat
             Properties.Settings.Default.Save();
         }
 
-        private int sliderVtoRowCount()
+        private int calculateColumnCount()
         {
-            return GridVSlider.Maximum - GridVSlider.Value + GridVSlider.Minimum;
+            return (int)Math.Ceiling((float)(ClassroomSpotsPanel.Width / (new ClassroomSpotControl()).Width)) + 1;
         }
 
-        private int rowCounttoSliderV()
+        private int calculateRowCount()
         {
-            return GridVSlider.Minimum + GridVSlider.Maximum - ClassroomSpotTable.RowCount;
+            return (int)Math.Ceiling((float)(ClassroomSpotsPanel.Height / (new ClassroomSpotControl()).Height)) + 1;
         }
 
-        private int sliderHtoColumnCount()
+        private void refreshDeskCount()
         {
-            return GridHSlider.Maximum - GridHSlider.Value + GridHSlider.Minimum;
+            int unaccommodatedStudentCount = StudentListbox.Students.Count - unoccupiedDesks.Count;
+            if (unaccommodatedStudentCount > 0)
+            {
+                DeskCountlbl.Text = string.Join("", "You need ", unaccommodatedStudentCount.ToString(), " more desks to accommodate all of your students.");
+            }
+            DeskCountlbl.Visible = (unaccommodatedStudentCount > 0);
+            Seatbtn.Enabled = (unaccommodatedStudentCount <= 0) && (StudentListbox.Students.Count > 0);
+            Unseatbtn.Enabled = (occupiedDesks.Count > 0);
         }
 
-        private int columnCounttoSliderH()
+        private void updateDeskState(ClassroomSpotControl desk, bool seat, bool occupied)
         {
-            return GridHSlider.Minimum + GridHSlider.Maximum - ClassroomSpotTable.ColumnCount;
-        }
-
-        private void resizeClassroomSpotTable(int columnCount, int rowCount, bool fill = false)
-        {
-            // Handle shrinking (stopping at seats)
-
-            int oldColumnCount = ClassroomSpotTable.ColumnCount;
-            int oldRowCount = ClassroomSpotTable.RowCount;
-            ClassroomSpotTable.ColumnCount = columnCount;
-            ClassroomSpotTable.RowCount = rowCount;
-
-            float columnPercentage = ClassroomSpotTable.ColumnCount / 100.0f;
-            for (int x = oldColumnCount; x < ClassroomSpotTable.ColumnCount; x++)
+            if (!seat)
             {
-                ClassroomSpotTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, columnPercentage));
-            }
-            for (int x = 0; x < oldColumnCount; x++)
-            {
-                ClassroomSpotTable.ColumnStyles[x].Width = columnPercentage;
-            }
-            float rowPercentage = ClassroomSpotTable.RowCount / 100.0f;
-            for (int y = oldRowCount; y < ClassroomSpotTable.RowCount; y++)
-            {
-                ClassroomSpotTable.RowStyles.Add(new RowStyle(SizeType.Percent, rowPercentage));
-            }
-            for (int y = 0; y < oldRowCount; y++)
-            {
-                ClassroomSpotTable.RowStyles[y].Height = rowPercentage;
-            }
-            if (fill)
-            {
-                int difference = (ClassroomSpotTable.ColumnCount * ClassroomSpotTable.RowCount) - (oldColumnCount * oldRowCount);
-                if (difference > 0)
-                {
-                    for (int i = 0; i < difference; i++)
-                    {
-                        ClassroomSpotTable.Controls.Add(new ClassroomSpotControl() { Dock = DockStyle.Fill });
-                    }
-                }
-            }
-            GridHSlider.Value = columnCounttoSliderH();
-            GridVSlider.Value = rowCounttoSliderV();
-        }
-
-        public void LoadSeatingPlan(Tuple<List<ClassroomSpot>, Size> seatingPlan)
-        {
-            ClassroomSpotTable.Controls.Clear();
-            ClassroomSpotTable.ColumnStyles.Clear();
-            ClassroomSpotTable.RowStyles.Clear();
-            ClassroomSpotTable.ColumnCount = 0;
-            ClassroomSpotTable.RowCount = 0;
-            if (seatingPlan is null)
-            {
-                resizeClassroomSpotTable(sliderHtoColumnCount(), sliderVtoRowCount(), true);
+                occupiedDesks.Remove(desk);
+                unoccupiedDesks.Remove(desk);
             }
             else
             {
-                resizeClassroomSpotTable(seatingPlan.Item2.Width, seatingPlan.Item2.Height);
-
-                foreach (ClassroomSpot spot in seatingPlan.Item1)
+                if (occupied)
                 {
-                    ClassroomSpotTable.Controls.Add(new ClassroomSpotControl(spot));
+                    unoccupiedDesks.Remove(desk);
+                    occupiedDesks.Add(desk);
+                }
+                else
+                {
+                    occupiedDesks.Remove(desk);
+                    unoccupiedDesks.Add(desk);
                 }
             }
-
-            
+            refreshDeskCount();
         }
 
-        public SeatingPlanForm(List<Student> students, Tuple<List<ClassroomSpot>, Size> seatingPlan)
+        private void seatRandomStudent()
+        {
+            ClassroomSpotControl[] unoccupiedDeskArray = unoccupiedDesks.ToArray();
+            int deskIndex = random.Next(0, unoccupiedDeskArray.Length);
+            ClassroomSpotControl desk = unoccupiedDeskArray[deskIndex];
+            int studentIndex = random.Next(0, StudentListbox.Students.Count);
+            desk.Occupant = StudentListbox.popStudent(studentIndex);
+        }
+
+        private void unseatRandomStudent()
+        {
+            if (occupiedDesks.Count <= 0) { return; }
+            ClassroomSpotControl desk = occupiedDesks.First();
+            StudentListbox.appendStudentList(new List<Student> { desk.Occupant });
+            desk.Occupant = null;
+        }
+
+        private ClassroomSpot popSpotByLocation(List<ClassroomSpot> classroomSpots, Point targetLocation)
+        {
+            if (classroomSpots is null) { return null; }
+            int index = 0;
+            foreach (ClassroomSpot classroomSpot in classroomSpots)
+            {
+                if (classroomSpot.Location.Equals(targetLocation))
+                {
+                    break;
+                }
+                index++;
+            }
+            if (index >= classroomSpots.Count) { return null; }   // Somewhat unclear, this occurs if we didn't find target spot
+            ClassroomSpot targetSpot = classroomSpots[index];
+            classroomSpots.RemoveAt(index);
+            return targetSpot;
+        }
+
+        private Point getClassroomSpotLocation(int x, int y)
+        {
+            Size classroomSpotSize = new ClassroomSpotControl().Size;
+            return new Point(x * classroomSpotSize.Width, y * classroomSpotSize.Height);
+        }
+
+        private void addClassroomSpot(int x, int y, ClassroomSpot data = null)
+        {
+            ClassroomSpotControl newSpot = new ClassroomSpotControl();
+            newSpot.subscribeToDeskChange(updateDeskState);
+            newSpot.Location = getClassroomSpotLocation(x, y);
+            newSpot.UpdateSpot(new Point(x, y), data?.Occupant, (data != null));
+            StudentListbox.removeStudentList(new List<Student>() { data?.Occupant });
+            ClassroomSpotsPanel.Controls.Add(newSpot);
+        }
+
+        private void growMaxIndex(Point newIndex)
+        {
+            if (newIndex.X > maxIndex.X)
+            {
+                maxIndex.X = newIndex.X;
+            }
+            if (newIndex.Y > maxIndex.Y)
+            {
+                maxIndex.Y = newIndex.Y;
+            }
+        }
+
+        private void growMaxIndex(List<ClassroomSpot> classroomSpots)
+        {
+            if (classroomSpots is null) { return; }
+            foreach (ClassroomSpot classroomSpot in classroomSpots)
+            {
+                growMaxIndex(classroomSpot.Location);
+            }
+        }
+
+        private void growClassroomSpots()
+        {
+            growMaxIndex(loadedSeatingPlan);
+            int columnCount = Math.Max(calculateColumnCount(), maxIndex.X + 1);
+            int rowCount = Math.Max(calculateRowCount(), maxIndex.Y + 1);
+
+            // Grow columns
+            for (int x = classroomColumnCount; x < columnCount; x++)
+            {
+                for (int y = 0; y < classroomRowCount; y++)
+                {
+                    addClassroomSpot(x, y, popSpotByLocation(loadedSeatingPlan, new Point(x, y)));
+                }
+                classroomColumnCount++;
+            }
+
+            // Grow rows
+            for (int y = classroomRowCount; y < rowCount; y++)
+            {
+                for (int x = 0; x < classroomColumnCount; x++)
+                {
+                    addClassroomSpot(x, y, popSpotByLocation(loadedSeatingPlan, new Point(x, y)));
+                }
+                classroomRowCount++;
+            }
+        }
+
+        public void LoadSeatingPlan()
+        {
+            growClassroomSpots();
+            // Grow window to make sure all desks are visible
+            Point minimumSize = getClassroomSpotLocation(maxIndex.X + 1, maxIndex.Y + 1);
+            int widthDifference = minimumSize.X - ClassroomSpotsPanel.Width;
+            int heightDifference = minimumSize.Y - ClassroomSpotsPanel.Height;
+            if (widthDifference > 0)
+            {
+                this.Width = this.Width + widthDifference;
+            }
+            if (heightDifference > 0)
+            {
+                this.Height = this.Height + heightDifference;
+            }
+            ClassroomSpotsPanel.Invalidate();
+        }
+
+        public SeatingPlanForm(List<Student> students, List<ClassroomSpot> seatingPlan)
         {
             InitializeComponent();
+            StudentListbox.subscribeToStudentListChangeEvent(refreshDeskCount);
             StudentListbox.updateStudentList(students);
-            LoadSeatingPlan(seatingPlan);
+            loadedSeatingPlan = seatingPlan?.ToList();
         }
 
         private void SeatingPlanForm_Load(object sender, EventArgs e)
         {
             loadSettings();
+            LoadSeatingPlan();
+            ready = true;
         }
 
-        private void GridVSlider_Scroll(object sender, EventArgs e)
+        private void ClassroomSpotsPanel_Resize(object sender, EventArgs e)
         {
-            resizeClassroomSpotTable(sliderHtoColumnCount(), sliderVtoRowCount(), true);
+            if (!ready) { return; }
+            growClassroomSpots();
         }
 
-        private void GridHSlider_Scroll(object sender, EventArgs e)
+        private void SeatingPlanForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            resizeClassroomSpotTable(sliderHtoColumnCount(), sliderVtoRowCount(), true);
+            saveSettings();
+        }
+
+        private void Seatbtn_Click(object sender, EventArgs e)
+        {
+            while (StudentListbox.Students.Count > 0)
+            {
+                seatRandomStudent();
+            }
+        }
+
+        private void Unseatbtn_Click(object sender, EventArgs e)
+        {
+            while (occupiedDesks.Count > 0)
+            {
+                unseatRandomStudent();
+            }
+        }
+
+        private void Cancelbtn_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void Savebtn_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        public List<ClassroomSpot> GetSeatingPlan()
+        {
+            List<ClassroomSpot> seatingPlan = new List<ClassroomSpot>();
+            foreach (ClassroomSpotControl desk in occupiedDesks)
+            {
+                seatingPlan.Add(new ClassroomSpot(desk.SpotLocation, desk.Occupant));
+            }
+            foreach (ClassroomSpotControl desk in unoccupiedDesks)
+            {
+                seatingPlan.Add(new ClassroomSpot(desk.SpotLocation, desk.Occupant));
+            }
+            return seatingPlan;
+        }
+
+        private Bitmap TakeScreenshot(Control control)
+        {
+            Bitmap bmp = new Bitmap(control.Width, control.Height);
+            control.DrawToBitmap(bmp, new Rectangle(0, 0, bmp.Width, bmp.Height));
+            return bmp;
+        }
+
+        private void ExportImagebtn_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.InitialDirectory = FileHandler.getSharingFolder();
+            saveFileDialog.FileName = Model.currentClass.Name + " Seating Plan";
+            saveFileDialog.DefaultExt = ".png";
+            saveFileDialog.Filter = "PNG Image (*.png)|*.png";
+            if (saveFileDialog.ShowDialog() != DialogResult.OK) { return; }
+            FileHandler.setSharingFolder(saveFileDialog.FileName);
+            FileHandler.saveImage(TakeScreenshot(ClassroomSpotsPanel), System.Drawing.Imaging.ImageFormat.Png, saveFileDialog.FileName, true);
         }
     }
 }

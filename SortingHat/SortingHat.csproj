@@ -161,6 +161,9 @@
     <Compile Include="SeatingPlanForm.Designer.cs">
       <DependentUpon>SeatingPlanForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="SeatTextbox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="StudentList.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -208,6 +211,9 @@
     <EmbeddedResource Include="SeatingPlanForm.resx">
       <DependentUpon>SeatingPlanForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="SeatTextbox.resx">
+      <DependentUpon>SeatTextbox.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="StudentList.resx">
       <DependentUpon>StudentList.cs</DependentUpon>
     </EmbeddedResource>
@@ -231,6 +237,8 @@
     <None Include="resources\Help.png" />
     <None Include="resources\Desk.png" />
     <None Include="resources\Tile.png" />
+    <None Include="resources\DeskSpot.png" />
+    <None Include="resources\Outline.jpg" />
     <Content Include="sortinghaticon.ico" />
   </ItemGroup>
   <ItemGroup>

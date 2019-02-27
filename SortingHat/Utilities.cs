@@ -18,7 +18,7 @@ namespace SortingHat
         {
             try
             {
-                return Regex.Replace(input, @"[^\w\.@-]", "", RegexOptions.None, TimeSpan.FromSeconds(1.5)).Trim();
+                return Regex.Replace(input, @"[^\w^ \.@-]", "", RegexOptions.None, TimeSpan.FromSeconds(1.5)).Trim();
             }
             catch (RegexMatchTimeoutException)
             {

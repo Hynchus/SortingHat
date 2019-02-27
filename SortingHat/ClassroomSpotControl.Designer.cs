@@ -30,49 +30,50 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ClassroomSpotControl));
-            this.OccupantNamelbl = new System.Windows.Forms.Label();
             this.BackgroundImages = new System.Windows.Forms.ImageList(this.components);
+            this.Occupantlbl = new SortingHat.SeatTextbox();
             this.SuspendLayout();
-            // 
-            // OccupantNamelbl
-            // 
-            this.OccupantNamelbl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.OccupantNamelbl.BackColor = System.Drawing.Color.White;
-            this.OccupantNamelbl.Location = new System.Drawing.Point(4, 44);
-            this.OccupantNamelbl.Name = "OccupantNamelbl";
-            this.OccupantNamelbl.Size = new System.Drawing.Size(143, 23);
-            this.OccupantNamelbl.TabIndex = 0;
-            this.OccupantNamelbl.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.OccupantNamelbl.Visible = false;
             // 
             // BackgroundImages
             // 
             this.BackgroundImages.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("BackgroundImages.ImageStream")));
             this.BackgroundImages.TransparentColor = System.Drawing.Color.Transparent;
-            this.BackgroundImages.Images.SetKeyName(0, "Tile.png");
-            this.BackgroundImages.Images.SetKeyName(1, "Desk.png");
+            this.BackgroundImages.Images.SetKeyName(0, "Outline.jpg");
+            this.BackgroundImages.Images.SetKeyName(1, "Full.jpg");
+            // 
+            // Occupantlbl
+            // 
+            this.Occupantlbl.BackColor = System.Drawing.SystemColors.HighlightText;
+            this.Occupantlbl.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.Occupantlbl.Location = new System.Drawing.Point(12, 14);
+            this.Occupantlbl.Name = "Occupantlbl";
+            this.Occupantlbl.Occupant = null;
+            this.Occupantlbl.Size = new System.Drawing.Size(104, 22);
+            this.Occupantlbl.TabIndex = 1;
+            this.Occupantlbl.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.Occupantlbl.Visible = false;
             // 
             // ClassroomSpotControl
             // 
-            this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.BackgroundImage = global::SortingHat.Properties.Resources.Tile;
+            this.BackgroundImage = global::SortingHat.Properties.Resources.Outline;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.Controls.Add(this.OccupantNamelbl);
+            this.Controls.Add(this.Occupantlbl);
             this.DoubleBuffered = true;
             this.Margin = new System.Windows.Forms.Padding(0);
             this.Name = "ClassroomSpotControl";
-            this.Size = new System.Drawing.Size(150, 116);
+            this.Size = new System.Drawing.Size(128, 64);
             this.Click += new System.EventHandler(this.ClassroomSpotControl_Click);
+            this.DragDrop += new System.Windows.Forms.DragEventHandler(this.OnDragDrop);
+            this.DragEnter += new System.Windows.Forms.DragEventHandler(this.OnDragEnter);
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Label OccupantNamelbl;
         private System.Windows.Forms.ImageList BackgroundImages;
+        private SeatTextbox Occupantlbl;
     }
 }

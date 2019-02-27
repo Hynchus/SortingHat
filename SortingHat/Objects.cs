@@ -15,13 +15,13 @@ namespace SortingHat
         private List<Constraint> constraints;
         private List<Grouping> groupings;
         private string currentGroupingName = "";
-        private Tuple<List<ClassroomSpot>, Size> seatingPlan = null;
+        private List<ClassroomSpot> seatingPlan = null;
 
         public string Name { get => name; }
         public List<Student> Students { get => students; }
         public List<Constraint> Constraints { get => constraints; }
         public List<Grouping> Groupings { get => groupings; }
-        public Tuple<List<ClassroomSpot>, Size> SeatingPlan 
+        public List<ClassroomSpot> SeatingPlan 
         {
             get => seatingPlan;
             set => seatingPlan = value;
@@ -54,7 +54,7 @@ namespace SortingHat
 
         public void addGrouping(Grouping grouping)
         {
-            grouping.updateStudents(ref this.students);
+            grouping.updateStudents(this.students);
             Groupings.Add(grouping);
         }
 
@@ -131,15 +131,52 @@ namespace SortingHat
             {
                 grouping.removeStudent(student);
             }
+            foreach (Constraint constraint in Constraints)
+            {
+                constraint.Students.Remove(student);
+            }
+            foreach (ClassroomSpot desk in SeatingPlan)
+            {
+                if (desk.Occupant == student)
+                {
+                    desk.Occupant = null;
+                }
+            }
         }
 
-        public void updateStudents(List<Student> students)
+        public void updateStudents(List<string> studentNames)
         {
-            this.students = students;
+            List<Student> updatedStudents = new List<Student>();
+            foreach (string name in studentNames)
+            {
+                if (string.IsNullOrWhiteSpace(name)) { continue; }
+                try
+                {
+                    Student student = this.students.First(s => s.Name.Equals(name));
+                    updatedStudents.Add(student);
+                }
+                catch (InvalidOperationException) // No existing student with that name
+                {
+                    updatedStudents.Add(new Student(name));
+                }
+            }
+            List<Student> removedStudents = this.students.Except(updatedStudents).ToList();
+            foreach (Student student in removedStudents)
+            {
+                removeStudent(student);
+            }
+            List<Student> addedStudents = updatedStudents.Except(this.students).ToList();
+            foreach (Student student in addedStudents)
+            {
+                addStudent(student);
+            }
+            /*
+            this.students = updatedStudents;
             foreach (Grouping grouping in Groupings)
             {
-                grouping.updateStudents(ref students);
+                grouping.updateStudents(this.students);
             }
+            */
             sortStudents();
         }
 
@@ -206,7 +243,7 @@ namespace SortingHat
             {
                 group.clearStudents();
             }
-            updateStudents(ref students);
+            updateStudents(students);
         }
 
         public bool containsStudent(Student student)
@@ -226,7 +263,7 @@ namespace SortingHat
             return false;
         }
 
-        public List<Student> getMissingStudents(ref List<Student> students)
+        public List<Student> getMissingStudents(List<Student> students)
         {
             List<Student> missingStudents = new List<Student>();
             foreach (Group group in Groups)
@@ -246,7 +283,7 @@ namespace SortingHat
             return missingStudents;
         }
 
-        public List<Student> getNewStudents(ref List<Student> students)
+        public List<Student> getNewStudents(List<Student> students)
         {
             List<Student> newStudents = new List<Student>();
             foreach (Student student in students)
@@ -379,10 +416,10 @@ namespace SortingHat
             resolveConstraintConflicts();
         }
 
-        public void updateStudents(ref List<Student> students)
+        public void updateStudents(List<Student> students)
         {
-            removeStudents(getMissingStudents(ref students));
-            addStudents(getNewStudents(ref students));
+            removeStudents(getMissingStudents(students));
+            addStudents(getNewStudents(students));
         }
 
         public void refreshConstraints()
@@ -562,15 +599,15 @@ namespace SortingHat
     [Serializable]
     public class ClassroomSpot
     {
-        private bool seat;
+        private Point location;
         private Student occupant;
 
-        public bool Seat { get => seat; set => seat = value; }
+        public Point Location { get => location; set => location = value; }
         public Student Occupant { get => occupant; set => occupant = value; }
 
-        public ClassroomSpot(bool seat = false, Student occupant = null)
+        public ClassroomSpot(Point location, Student occupant = null)
         {
-            Seat = seat;
+            Location = location;
             Occupant = occupant;
         }
         
